@@ -2563,6 +2563,16 @@ footer .copyright p {
   word-wrap: break-word;
   padding-right: 4px;
 }
+canvas {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  min-width: 100%;
+  min-height: 100%;
+  height: auto;
+  width: auto;
+  z-index: -1;
+}
 .l_body {
   position: relative;
   margin: 16px;
