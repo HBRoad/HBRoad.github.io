@@ -632,7 +632,7 @@ details summary {
   padding: 16px;
   margin: -16px;
   color: rgba(85,85,85,0.7);
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 details summary > p,
@@ -952,7 +952,7 @@ p.p.right {
 }
 span.p.small,
 p.p.small {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 span.p.large,
 p.p.large {
@@ -1045,7 +1045,7 @@ div.tabs ul.nav-tabs li.tab a {
   border-radius: 4px 4px 0 0;
   padding: 8px;
   text-align: center;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: inherit;
   font-weight: bold;
   color: rgba(68,68,68,0.65);
@@ -1659,7 +1659,7 @@ div.fancybox.stretch>p img {
   border-left: 2px solid transparent;
   border-radius: 2px;
   vertical-align: middle;
-  font-size: 0.875rem;
+  font-size: 1rem;
   transition: all 0.28s ease;
   -moz-transition: all 0.28s ease;
   -webkit-transition: all 0.28s ease;
@@ -2018,7 +2018,7 @@ div.fancybox.stretch>p img {
 @media screen and (max-width: 500px) {
   .article ul,
   .article ol {
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
   .article figure {
     font-size: 13px;
@@ -2175,20 +2175,20 @@ article .readmore {
   margin-top: 1rem;
 }
 article .readmore >a {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 .cover-wrapper .cover {
   top: 0;
   left: 0;
   max-width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
   align-items: center;
   align-self: center;
   align-content: center;
-  color: #555;
+  color: #fa8d95;
   padding: 16px;
 }
 .cover-wrapper .cover .cover-body div.b {
@@ -2296,10 +2296,10 @@ article .readmore >a {
 }
 .cover-wrapper .cover .cover-body .title {
   font-size: 3rem;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 .cover-wrapper .cover .cover-body .subtitle {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 .cover-wrapper .cover .cover-body .logo {
   max-height: 100px;
@@ -2310,7 +2310,7 @@ article .readmore >a {
     font-size: 3.6rem;
   }
   .cover-wrapper .cover .cover-body .subtitle {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
   }
   .cover-wrapper .cover .cover-body .logo {
     max-height: 150px;
@@ -2341,7 +2341,7 @@ article .readmore >a {
   width: 32px;
   top: 0;
   left: 5px;
-  color: rgba(85,85,85,0.75);
+  color: #1bc3fb;
 }
 .cover-wrapper .cover .cover-body .m_search .input {
   display: block;
@@ -2349,14 +2349,14 @@ article .readmore >a {
   width: 100%;
   box-shadow: none;
   box-sizing: border-box;
-  font-size: 0.875rem;
+  font-size: 1rem;
   -webkit-appearance: none;
   padding-left: 36px;
   border-radius: 1.4rem;
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
-  border: none;
-  color: #444;
+  border: solid;
+  color: #1bc3fb;
 }
 @media screen and (max-width: 500px) {
   .cover-wrapper .cover .cover-body .m_search .input {
@@ -2386,7 +2386,7 @@ article .readmore >a {
   height: auto;
 }
 .cover-wrapper .cover .cover-body .menu ul>li>a {
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 2px;
   margin: 4px;
   transition: all 0.28s ease;
@@ -2410,7 +2410,7 @@ footer {
   position: relative;
   padding: 40px 10px 120px 10px;
   width: 100%;
-  color: rgba(85,85,85,0.5);
+  color: #2196f3;
   margin: 0px auto;
   overflow: hidden;
   text-align: center;
@@ -2465,7 +2465,7 @@ footer .copyright {
   margin-top: 16px;
 }
 footer .copyright p {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 @media screen and (max-width: 768px) {
   footer {
@@ -3021,7 +3021,7 @@ div.hoverbox:hover >div.target {
 .comments .article p[cst] {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 .white-box {
   background: #fff;
@@ -3263,7 +3263,7 @@ div.hoverbox:hover >div.target {
   box-shadow: none;
   box-sizing: border-box;
   padding-left: 36px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   border-radius: 8px;
   border: 1px dashed transparent;
 }
@@ -3357,7 +3357,7 @@ ul.list-v >li>a {
   -o-transition: all 0.28s ease;
   display: block;
   color: rgba(68,68,68,0.85);
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
   line-height: 33px;
   padding: 0 16px;
@@ -3613,7 +3613,7 @@ ul.list-v >li>a.active {
   width: 1rem;
 }
 .l_main .article .prev-next >a p.content {
-  font-size: 0.875rem;
+  font-size: 1rem;
   margin: 0 0.5rem;
   text-align: justify;
   word-break: break-all;
@@ -3853,7 +3853,7 @@ ul.list-v >li>a.active {
   display: block;
   float: right;
   vertical-align: middle;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
   line-height: 50px;
   color: rgba(68,68,68,0.65);
@@ -3867,7 +3867,7 @@ ul.list-v >li>a.active {
   margin-left: 16px;
 }
 #u-search .modal-footer .nav .icon {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 #u-search .modal-body {
   position: absolute;
@@ -3949,7 +3949,7 @@ ul.list-v >li>a.active {
 }
 .l_side .widget >.content {
   text-align: justify;
-  font-size: 0.875rem;
+  font-size: 1rem;
   max-height: calc(100% - 264px);
   max-width: 100%;
 }
@@ -4033,7 +4033,7 @@ ul.list-v >li>a.active {
 .widget >.content ul.popular-posts a .badge {
   flex: none;
   font-weight: normal;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: rgba(68,68,68,0.7);
 }
 .widget >.content ul.entry a:hover,
@@ -4160,7 +4160,7 @@ ul.list-v >li>a.active {
 }
 .widget.text .content,
 .widget.text .content p {
-  font-size: 0.875rem;
+  font-size: 1rem;
   word-break: break-all;
 }
 .widget.text .content a {
@@ -4181,7 +4181,7 @@ ul.list-v >li>a.active {
   padding: 8px 0;
 }
 .widget.list .content a {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
   line-height: 2.4em;
 }
@@ -4291,7 +4291,7 @@ ul.list-v >li>a.active {
   margin-bottom: 8px;
 }
 .widget.related_posts .content h3 {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
   margin: 0;
 }
@@ -4407,7 +4407,7 @@ ul.list-v >li>a.active {
 .l_side .toc-wrapper a {
   padding-left: 8px;
   color: rgba(68,68,68,0.65);
-  font-size: 0.875rem;
+  font-size: 1rem;
   display: inline-block;
 }
 .l_side .toc-wrapper ul .toc-item.toc-level-1 .toc-child a,

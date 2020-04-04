@@ -52,7 +52,7 @@
 
   
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.4.0.1/css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
   
 
@@ -376,7 +376,7 @@
               </div>
               <div class="archive-item all-tags">
                 
-                <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/hexo/" style="font-size: 14px; color: #999">hexo</a>
+                <a href="/tags/Commemorate/" style="font-size: 14px; color: #999">Commemorate</a> <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/hexo/" style="font-size: 14px; color: #999">hexo</a>
               </div>
               <br>
               
@@ -466,6 +466,11 @@
       <ul class="entry navigation">
         
           <li><a class="flat-box"
+            title="/categories/Commemorate/" href="/categories/Commemorate/"
+            id="categoriesCommemorate"
+            ><div class='name'>Commemorate</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
             title="/categories/hexo/" href="/categories/hexo/"
             id="categorieshexo"
             ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
@@ -492,7 +497,7 @@
 
 
     <div class='content'>
-      <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/hexo/" style="font-size: 14px; color: #999">hexo</a>
+      <a href="/tags/Commemorate/" style="font-size: 14px; color: #999">Commemorate</a> <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/hexo/" style="font-size: 14px; color: #999">hexo</a>
     </div>
   </section>
 
@@ -674,7 +679,7 @@ setInterval("createtime()",250);
 
 
   
-<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.4.0/js/app.js"></script>
+<script src="/js/app.js"></script>
 
 
 
@@ -696,7 +701,7 @@ setInterval("createtime()",250);
     var initCopyCode = function(){
       var copyHtml = '';
       copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
-      copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+      copyHtml += '<i class="fas fa-copy"></i><span>复制</span>';
       copyHtml += '</button>';
       $(".highlight .code pre").before(copyHtml);
       var clipboard = new ClipboardJS('.btn-copy', {
@@ -711,7 +716,7 @@ setInterval("createtime()",250);
         $icon.removeClass('fa-copy');
         $icon.addClass('fa-clipboard-check');
         let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPIED';
+        $span[0].innerText = '复制成功';
       });
       clipboard.on('error', function(e) {
         e.clearSelection();
@@ -721,7 +726,7 @@ setInterval("createtime()",250);
         $icon.removeClass('fa-copy');
         $icon.addClass('fa-exclamation-triangle');
         let $span = $($btn.find('span'));
-        $span[0].innerText = 'COPY FAILED';
+        $span[0].innerText = '复制失败';
       });
     }
     initCopyCode();
