@@ -2188,7 +2188,7 @@ article .readmore >a {
   align-items: center;
   align-self: center;
   align-content: center;
-  color: #fa8d95;
+  color: #f3898b;
   padding: 16px;
 }
 .cover-wrapper .cover .cover-body div.b {
@@ -2400,8 +2400,8 @@ article .readmore >a {
 .cover-wrapper .cover .cover-body .menu ul>li>a:hover,
 .cover-wrapper .cover .cover-body .menu ul>li>a.active,
 .cover-wrapper .cover .cover-body .menu ul>li>a:active {
-  color: #555;
-  border-bottom: 2px solid #555;
+  color: #2196f3;
+  border-bottom: 2px solid #2196f3;
 }
 .cover-wrapper .cover .cover-body .switcher > li a:hover {
   background: rgba(68,68,68,0.15);
