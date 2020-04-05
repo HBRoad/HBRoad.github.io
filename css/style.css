@@ -2195,8 +2195,8 @@ article .readmore >a:active {
   top: 0;
   left: 0;
   max-width: 100%;
-  height: 80vh;
-  display: flex;
+  height: 100vh;
+/*display: flex */
   flex-wrap: nowrap;
   flex-direction: column;
   align-items: center;
@@ -2212,7 +2212,7 @@ article .readmore >a:active {
 .cover-wrapper .cover.half {
   margin-bottom: -100px;
   max-height: 640px;
-  min-height: 400px;
+  min-height: 200px;
   height: calc(36vh - 64px + 200px);
 }
 .cover-wrapper .cover.half .cover-body div.b {
@@ -2317,6 +2317,7 @@ article .readmore >a:active {
 }
 .cover-wrapper .cover .cover-body .logo {
   max-height: 100px;
+  margin-top: calc(28vh - 80px);
   max-width: calc(100% - 4 * 16px);
 }
 @media screen and (min-height: 1024px) {
