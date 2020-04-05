@@ -2175,7 +2175,21 @@ article .readmore {
   margin-top: 1rem;
 }
 article .readmore >a {
-  font-size: 1rem;
+  font-size: 0.8em;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 2rem;
+  color: #fff;
+  background-color: #1bc3fb;
+  padding: 0.2em 2.4em;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+article .readmore >a:hover,
+article .readmore >a.active,
+article .readmore >a:active {
+  background-color: #04a2d7;
+  border-bottom: 2px;
 }
 .cover-wrapper .cover {
   top: 0;
