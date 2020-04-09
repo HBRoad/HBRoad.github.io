@@ -3608,8 +3608,8 @@ ul.list-v >li>a.active {
 }
 .l_main .article .prev-next >a {
   width: 100%;
-  padding: 8px;
-  color: rgba(68,68,68,0.65);
+  padding: 0px 3px;
+  color: #2196f3;
   background: #f6f6f6;
   border-radius: 4px;
 }
