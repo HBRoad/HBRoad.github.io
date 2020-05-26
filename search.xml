@@ -4,11 +4,61 @@
   
     
     <entry>
+      <title>毕设：链片条复合模CAD系统使用须知</title>
+      <link href="/2020/05/26/%E9%93%BE%E7%89%87%E6%9D%A1%E5%A4%8D%E5%90%88%E6%A8%A1CAD%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E9%A1%BB%E7%9F%A5/"/>
+      <url>/2020/05/26/%E9%93%BE%E7%89%87%E6%9D%A1%E5%A4%8D%E5%90%88%E6%A8%A1CAD%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E9%A1%BB%E7%9F%A5/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h5 id="由于该系统只在-win10-系统环境下测试，未在其他环境下测试，不能保证可用性，现将已知的问题做一说明！"><a href="#由于该系统只在-win10-系统环境下测试，未在其他环境下测试，不能保证可用性，现将已知的问题做一说明！" class="headerlink" title="由于该系统只在 win10 系统环境下测试，未在其他环境下测试，不能保证可用性，现将已知的问题做一说明！"></a>由于该系统只在 win10 系统环境下测试，未在其他环境下测试，不能保证可用性，现将已知的问题做一说明！</h5><a id="more"></a><h3 id="已知错误1：数据库引擎"><a href="#已知错误1：数据库引擎" class="headerlink" title="已知错误1：数据库引擎"></a>已知错误1：数据库引擎</h3><p>本系统采用 ACCESS 作为数据库，经测试（虚拟机测试），win7 等系统上会出现 “未在本地计算机上注册‘Microsoft. ACE. OLEDB. 12. 0’提供程序”类似的提示。</p><p><img src="https://i.loli.net/2020/05/26/LJwRFIAp4N3HCyB.png" alt="运行错误.png"></p><center>运行错误提示</center><p>解决：安装数据库引擎即可，点下下方下载，下载完成后安装，提示安装成功后尝试再此运行本系统。</p><div class="btns circle center grid5">            <p class='cell'><a href='https://mqroad.lanzous.com/id006ba' target="_blank" rel="noopener" title='下载'><i class='fas fa-download'></i>下载</a></p>          </div>]]></content>
+      
+      
+      <categories>
+          
+          <category> 毕设 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 毕设 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>毕设：链片条复合模CAD系统</title>
+      <link href="/2020/05/25/%E9%93%BE%E7%89%87%E6%9D%A1%E5%A4%8D%E5%90%88%E6%A8%A1CAD%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"/>
+      <url>/2020/05/25/%E9%93%BE%E7%89%87%E6%9D%A1%E5%A4%8D%E5%90%88%E6%A8%A1CAD%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h5 id="毕设题目：采用滚动导向、中间导柱模架的复合模-CAD-系统研制-一-——设计计算及工程图绘制"><a href="#毕设题目：采用滚动导向、中间导柱模架的复合模-CAD-系统研制-一-——设计计算及工程图绘制" class="headerlink" title="毕设题目：采用滚动导向、中间导柱模架的复合模 CAD 系统研制(一) ——设计计算及工程图绘制"></a>毕设题目：采用滚动导向、中间导柱模架的复合模 CAD 系统研制(一) ——设计计算及工程图绘制</h5><h5 id="指导老师：谌霖霖"><a href="#指导老师：谌霖霖" class="headerlink" title="指导老师：谌霖霖"></a>指导老师：谌霖霖</h5><a id="more"></a><h2 id="开发平台"><a href="#开发平台" class="headerlink" title="开发平台"></a>开发平台</h2><p>系统环境：Windows 10 2004 专业版<br>开发环境：VB.NET<br>数据库：ACCESSS 365<br>软件平台：VS 2010</p><h2 id="系统简介"><a href="#系统简介" class="headerlink" title="系统简介"></a>系统简介</h2><p>该复合模 CAD 系统主要包含以下功能：</p><ul><li>用户登录</li><li>参数输入</li><li>设计计算</li><li>主界面<ul><li>设计结果</li><li>标准件库</li><li>建模装配</li><li>关于系统</li></ul></li></ul><h3 id="用户登录"><a href="#用户登录" class="headerlink" title="用户登录"></a>用户登录</h3><p>首先，用户在打开系统后，会出现登录界面，该界面四个按钮的功能如下：<br>1.登录：如若账号密码均正确，通过此按钮即可进入下一界面；<br>2.取消：如用户输入时出错，想直接清空输入框，可使用此按钮；<br>3.注册：新用户可通过注册后再登录；<br>4.退出：退出系统。</p><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525214117.png" alt="系统登陆界面" width="400" height="350" align="bottom" /><center>系统登陆界面</center><h3 id="参数输入"><a href="#参数输入" class="headerlink" title="参数输入"></a>参数输入</h3><p>用户登录后将进入该界面，在该界面由用户输入需要的尺寸值，也可使用默认值，点击开始设计，并选择模具的最小闭合高度，在确定之后即可开始设计计算。</p><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525220724.png" alt="参数输入界面" width="400" height="350" align="bottom" /><center>参数输入界面</center><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525222908.png" alt="参数输入界面" width="400" height="150" align="bottom" /><center>闭合高度选择</center><h3 id="主界面"><a href="#主界面" class="headerlink" title="主界面"></a>主界面</h3><p>系统主界面下可进行设计结果的查询、标准件的尺寸查询、三维建模与装配（调用同组同学 GRIP 程序）、查看仿真动画、系统信息及帮助文档</p><p>此外，在查询结果菜单下，用户可通过点击零件图纸查看零件的三维模型。</p><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525224828.png" alt="参数输入界面" width="400" height="100" align="bottom" /><center>系统主界面</center><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525230310.png" alt="参数输入界面" width="400" height="100" align="bottom" /><center>系统主界面菜单</center><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525231149.png" alt="参数输入界面" width="400" height="300" align="bottom" /><center>结果查询界面</center><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200525233130.png" alt="参数输入界面" width="400" height="300" align="bottom" /><center>零件信息界面</center><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/yanshi.gif" alt="参数输入界面" width="400" height="300" align="bottom" /><center>点击零件图纸查看零件的三维模型</center><p>剩余界面较为简单，这里不再赘述！</p><center>系统演示视频</center><center><iframe height=498 width=650 src='https://player.youku.com/embed/XNDY4NzU3MTk5Mg==' frameborder=0 'allowfullscreen'></iframe></center>]]></content>
+      
+      
+      <categories>
+          
+          <category> 毕设 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 毕设 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>全国性哀悼活动</title>
       <link href="/2020/04/04/%E6%82%BC%E5%BF%B5%E6%97%A5/"/>
       <url>/2020/04/04/%E6%82%BC%E5%BF%B5%E6%97%A5/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>据国家卫健委消息，截至4月3日，我国因感染新冠肺炎的逝者已有3326名。他们是父亲、母亲、儿女、兄妹，是我们血脉相连的骨肉同胞。我们向逝世同胞致哀，同时也向那些与死神不屈抗争的生命致敬，向那种生死瞬间的人间大爱致礼。</p><a id="more"></a><p><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200404185413.png" alt=""></p>]]></content>
+        <content type="html"><![CDATA[<p>据国家卫健委消息，截至4月3日，我国因感染新冠肺炎的逝者已有3326名。他们是父亲、母亲、儿女、兄妹，是我们血脉相连的骨肉同胞。我们向逝世同胞致哀，同时也向那些与死神不屈抗争的生命致敬，向那种生死瞬间的人间大爱致礼。</p><a id="more"></a><p><img src="https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/20200404185413.png" alt=""></p>]]></content>
       
       
       <categories>
@@ -33,7 +83,7 @@
       <link href="/2020/04/02/hello-world/"/>
       <url>/2020/04/02/hello-world/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><p>这是 Hexo 的介绍文档，这里面有它的官网以及官方文档，最重要的是记录下 hexo 的常用命令！</p><a id="more"></a><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+        <content type="html"><![CDATA[<p>这是 Hexo 的介绍文档，这里面有它的官网以及官方文档，最重要的是记录下 hexo 的常用命令！</p><a id="more"></a><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
       
       
       <categories>
