@@ -16,10 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>大佬们 - 南阳向北</title>
+    <title>数字图像处理 - 南阳向北</title>
+  
+    <meta name="keywords" content="DIP">
   
   
-    <meta name="description" content="虽然我很菜，但好在这里有大佬">
+    <meta name="description" content="数字图像处理基础理论（待补充）">
   
 
   <!-- feed -->
@@ -367,8 +369,11 @@
       
 
 <div class='l_main'>
-  <article id="links" class="post white-box blur article-type-links" itemscope itemprop="blogPost">
-    
+  
+
+  
+    <article id="post" class="post white-box blur article-type-post" itemscope itemprop="blogPost">
+      
 
 
   <section class='meta'>
@@ -379,8 +384,8 @@
         
   
     <h1 class="title">
-      <a href="/friends/index.html">
-        大佬们
+      <a href="/2022/07/17/digital_image_process/">
+        数字图像处理
       </a>
     </h1>
   
@@ -406,7 +411,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2020年4月4日</p>
+    <p>发布于：2022年7月17日</p>
   </a>
 </div>
 
@@ -433,7 +438,7 @@
     <div class="new-meta-item browse valine">
       <a class='notlink'>
         <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
-        <span id="/friends/index.html" class="leancloud_visitors" data-flag-title="大佬们">
+        <span id="/2022/07/17/digital_image_process/" class="leancloud_visitors" data-flag-title="数字图像处理">
         <p>
           <span class="leancloud-visitors-count">
             <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
@@ -455,123 +460,185 @@
   </section>
 
 
-      <section class="article article-entry l_friends">
-        <span class='p yellow p center small'>虽然我很菜，但好在这里有大佬</span>
+      <section class="article typo">
+        <div class="article-entry" itemprop="articleBody">
+          
+          <p>数字图像处理基础理论（待补充）</p>
+<a id="more"></a>
+
+<h1 id="空间滤波"><a href="#空间滤波" class="headerlink" title="空间滤波"></a>空间滤波</h1><h2 id="空间相关与卷积"><a href="#空间相关与卷积" class="headerlink" title="空间相关与卷积"></a>空间相关与卷积</h2><ul>
+<li><p>相关：图像上移动核的中心，求每个位置的乘积之和</p>
+<ul>
+<li>只满足分配律</li>
+</ul>
+</li>
+<li><p>卷积：把相关运算的<code>核旋转180°</code></p>
+<ul>
+<li>满足交换律、结合律、分配律</li>
+</ul>
+</li>
+<li><p>可分离核</p>
+<ul>
+<li>可分离核：能够表示为两个向量外积的矩阵</li>
+<li>$m \times n$ 的核 $\text{w}$ 可分离为：$\text{w} = v_{m \times 1}w_{n \times 1}^T$</li>
+<li>$m \times m$ 的核  $\text{w}$ 可分离为：$\text{w} = v_{m \times 1}v_{m \times 1}^T$</li>
+<li>优势：减少计算量，大核分离为小核计算</li>
+<li>判断是否可分离：矩阵的秩为 1（矩阵论：一列向量与一行向量的乘积的矩阵，秩为 1）</li>
+</ul>
+</li>
+<li><p>空间滤波器的构建</p>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+
+          
+            <br>
+            
+  
+    
+    
+
+<section class="widget copyright  desktop mobile">
+  <div class='content'>
+    
+      <blockquote>
         
           
-            
-              <div class='friends-group'>
-                
-                  <br>
-                  <h3 class='friend-header'>
-                    
-                      <i class="fas fa-user-tie fa-fw" aria-hidden="true"></i>
-                    
-                    自己啊
-                  </h3>
-                  
-                    <p>没错，这里还是我</p>
+            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
 
-                  
-                
-                <div class='friend-content'>
-                  
-                    <a class='friend-card' style='background:#f1f2eb; color:#57554b'
-                      target="_blank" rel="external nofollow noopener noreferrer" href='http://mqroad.ml/'>
-                      <div class='friend-left'>
-                        
-                          <img class='avatar' src='https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/avatar.png'/>
-                        
-                      </div>
-                      <div class='friend-right'>
-                        <p class="friend-name">南阳向北</p>
-                        
-                          <div class='friend-tags-wrapper'>
-                          
-                            <p class="tags"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>玩耍</p>
-                          
-                            <p class="tags"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>分享</p>
-                          
-                          </div>
-                        
-                        
-                      </div>
-                    </a>
-                  
-                </div>
-              </div>
-            
-          
-            
-              <div class='friends-group'>
-                
-                  <br>
-                  <h3 class='friend-header'>
-                    
-                      <i class="fas fa-user-tie fa-fw" aria-hidden="true"></i>
-                    
-                    大佬们
-                  </h3>
-                  
-                    <p>绝对的大佬</p>
-
-                  
-                
-                <div class='friend-content'>
-                  
-                    <a class='friend-card' style='background:#e1d7d7; color:#7e4a41'
-                      target="_blank" rel="external nofollow noopener noreferrer" href='https://xaoxuu.com/'>
-                      <div class='friend-left'>
-                        
-                          <img class='avatar' src='https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/avatar/avatar.png'/>
-                        
-                      </div>
-                      <div class='friend-right'>
-                        <p class="friend-name">xaoxuu</p>
-                        
-                          <div class='friend-tags-wrapper'>
-                          
-                            <p class="tags"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>主题作者</p>
-                          
-                          </div>
-                        
-                        
-                      </div>
-                    </a>
-                  
-                    <a class='friend-card' style='background:#ddd; color:#555'
-                      target="_blank" rel="external nofollow noopener noreferrer" href='https://www.itrhx.com/'>
-                      <div class='friend-left'>
-                        
-                          <img class='avatar' src='https://cdn.jsdelivr.net/gh/HBRoad/imgonline/image/trhx (1).png'/>
-                        
-                      </div>
-                      <div class='friend-right'>
-                        <p class="friend-name">TRHX'S BLOG</p>
-                        
-                          <div class='friend-tags-wrapper'>
-                          
-                            <p class="tags"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Python</p>
-                          
-                            <p class="tags"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i>Java</p>
-                          
-                          </div>
-                        
-                        
-                      </div>
-                    </a>
-                  
-                </div>
-              </div>
-            
           
         
-        <br><br>
-        <figure class="highlight plain"><figcaption><span>友链规范</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name:     # 博客名</span><br><span class="line">avatar:   # 头像链接</span><br><span class="line">url:      # 博客链接</span><br><span class="line">backgroundColor: &#39;#3E74C9&#39; # 卡片背景颜色</span><br><span class="line">textColor: &#39;#fff&#39;  # 卡片文字颜色</span><br><span class="line">tags: [标签1, 标签2]    # 标签</span><br><span class="line">desc: 描述文字</span><br></pre></td></tr></table></figure>
+          
+            <p>本文永久链接是：<a href=https://hbroad.github.io/2022/07/17/digital_image_process/>https://hbroad.github.io/2022/07/17/digital_image_process/</a></p>
+          
+        
+      </blockquote>
+    
+  </div>
+</section>
+
+  
+
+
+          
+        </div>
+        
+          
+
+
+  <section class='meta' id="footer-meta">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-07-29T20:08:30+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2022年7月29日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/DIP/" rel="nofollow"><i class="fas fa-hashtag fas fa-tags" aria-hidden="true"></i><p>DIP</p></a></div>
+
+
+        
+      
+        
+          
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qq.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
+          
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/qzone.png">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
+          
+          href="http://service.weibo.com/share/share.php?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          
+          >
+          
+            <img src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-assets/logo/128/weibo.png">
+          
+        </a>
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+  </section>
+
+
+        
+        
+          <div class="prev-next">
+            
+            
+              <a class='next' href='/2022/07/17/point_cloud_pcl/'>
+               <h6>下一页 <i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
+                <p class='title'>点云+PCL学习笔记</p>
+                <!--
+                <p class='content'>研究生阶段开始学习的一些笔记，存储在本地，为方便查看，搬至博客。
+
+
+点云
+分布在 N 维空间中的离散点集
+
+是对物体表面信息的离散采样
+
+
+点云库
+三维处理算法：滤波、特征估计、表面重建等
+
+...</p>
+                -->
+              </a>
+            
+          </div>
+        
       </section>
-  </article>
+    </article>
+  
 
-  <!-- 显示推荐文章和评论 -->
+  
+    <!-- 显示推荐文章和评论 -->
 
 
 
@@ -592,6 +659,43 @@
     </section>
   </article>
 
+
+  
+
+
+
+
+<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
+
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    tags: "ams",
+    macros: {
+      href: "{}"
+    }
+  },
+  options: {
+    ignoreHtmlClass: "tex2jax_ignore|dno",
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+
+
+
+  <script>
+    window.subData = {
+      title: '数字图像处理',
+      tools: true
+    }
+  </script>
 
 
 </div>
@@ -759,6 +863,20 @@
     
     
 
+
+  <section class="widget toc-wrapper blur desktop mobile">
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-text">空间相关与卷积</span></a></li></ol>
+    </div>
+  </section>
 
 
   
