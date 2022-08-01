@@ -16,12 +16,12 @@
 
   <!-- 页面元数据 -->
   
-    <title>数字图像处理 - 南阳向北</title>
+    <title>华为机试（牛客） - 南阳向北</title>
   
-    <meta name="keywords" content="DIP">
+    <meta name="keywords" content="Interview,华为机考">
   
   
-    <meta name="description" content="数字图像处理基础理论（待补充）">
+    <meta name="description" content="华为机考刷题记录，初次刷题，想法不成熟，大多直接暴力解决了">
   
 
   <!-- feed -->
@@ -384,8 +384,8 @@
         
   
     <h1 class="title">
-      <a href="/2022/07/17/digital_image_process/">
-        数字图像处理
+      <a href="/2022/07/31/HuaWei/">
+        华为机试（牛客）
       </a>
     </h1>
   
@@ -411,7 +411,7 @@
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2022年7月17日</p>
+    <p>发布于：2022年7月31日</p>
   </a>
 </div>
 
@@ -438,7 +438,7 @@
     <div class="new-meta-item browse valine">
       <a class='notlink'>
         <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
-        <span id="/2022/07/17/digital_image_process/" class="leancloud_visitors" data-flag-title="数字图像处理">
+        <span id="/2022/07/31/HuaWei/" class="leancloud_visitors" data-flag-title="华为机试（牛客）">
         <p>
           <span class="leancloud-visitors-count">
             <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
@@ -463,33 +463,79 @@
       <section class="article typo">
         <div class="article-entry" itemprop="articleBody">
           
-          <p>数字图像处理基础理论（待补充）</p>
+          <p><a href="https://www.nowcoder.com/exam/oj/ta?page=1&tpId=37&type=37" target="_blank" rel="noopener">华为机考</a>刷题记录，初次刷题，想法不成熟，大多直接暴力解决了</p>
 <a id="more"></a>
 
-<h1 id="空间滤波"><a href="#空间滤波" class="headerlink" title="空间滤波"></a>空间滤波</h1><h2 id="空间相关与卷积"><a href="#空间相关与卷积" class="headerlink" title="空间相关与卷积"></a>空间相关与卷积</h2><ul>
-<li><p>相关：图像上移动核的中心，求每个位置的乘积之和</p>
+<h2 id="HJ1"><a href="#HJ1" class="headerlink" title="HJ1"></a>HJ1</h2><ul>
+<li><p>题目：查找输入字符串最后一个单词的长度</p>
+</li>
+<li><p>思路：字符串由空格分隔，找到最后一个空格，用整体的长度减去空格及空格前的长度，剩余的即为所求</p>
+</li>
+<li><p>代码：</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> str;</span><br><span class="line">    getline(<span class="built_in">cin</span>,str);</span><br><span class="line">	<span class="comment">// size_t len = str.size();		//总长度</span></span><br><span class="line">	<span class="comment">// size_t found = str.rfind(" ");	//最后空格的位置</span></span><br><span class="line">     <span class="comment">// size_t found = str.find_last_of(" ");</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; str.<span class="built_in">size</span>() -  str.rfind(<span class="string">" "</span>) - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>只满足分配律</li>
+<li><p>分析：关键有二：</p>
+<ul>
+<li><p>字符串的获取</p>
+<ul>
+<li><p>cin：遇空格或制表符即停，显然无法满足</p>
+</li>
+<li><p>getline：可连续读取输入并存入字符串</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">istream&amp; <span class="title">getline</span> <span class="params">(istream&amp;  is, <span class="built_in">string</span>&amp; str)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+</li>
 </ul>
 </li>
-<li><p>卷积：把相关运算的<code>核旋转180°</code></p>
-<ul>
-<li>满足交换律、结合律、分配律</li>
 </ul>
 </li>
-<li><p>可分离核</p>
+</ul>
 <ul>
-<li>可分离核：能够表示为两个向量外积的矩阵</li>
-<li>$m \times n$ 的核 $\text{w}$ 可分离为：$\text{w} = v_{m \times 1}w_{n \times 1}^T$</li>
-<li>$m \times m$ 的核  $\text{w}$ 可分离为：$\text{w} = v_{m \times 1}v_{m \times 1}^T$</li>
-<li>优势：减少计算量，大核分离为小核计算</li>
-<li>判断是否可分离：矩阵的秩为 1（矩阵论：一列向量与一行向量的乘积的矩阵，秩为 1）</li>
+<li><p>最后空格的定位</p>
+<ul>
+<li><p>find_last_of()：给定待查找的字符，从后开始查找并返回其位置</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find_last_of</span> <span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* s, <span class="keyword">size_t</span> pos = npos)</span> <span class="keyword">const</span></span>;</span><br><span class="line"><span class="comment">//可以指定从何处开始查找，即指定第二个参数</span></span><br><span class="line"><span class="comment">//注意字符串从0开始编号</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>find 家族辨析：<a href="https://cplusplus.com/reference/string/string/find/" target="_blank" rel="noopener">参考</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//搜索指定位置开始的第一个完全匹配的字符（串），即与指定字串完全匹配时才返回，且是第一个</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = <span class="number">0</span>)</span></span>;	<span class="comment">//从前往后找</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">rfind</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = npos)</span></span>;	<span class="comment">//从后往前找</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//搜索指定位置开始的第一个匹配的字符（串），只需有一个字符满足即可</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find_first_of</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = <span class="number">0</span>)</span></span>;	<span class="comment">//从前往后找</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find_last_of</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = npos)</span></span>;	<span class="comment">//从后往前找</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//查找与指定字串不匹配的字符（串）</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find_first_not_of</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = <span class="number">0</span>)</span> </span>;</span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">find_last_not_of</span> <span class="params">(<span class="keyword">const</span> <span class="built_in">string</span>&amp; str, <span class="keyword">size_t</span> pos = npos)</span> </span>;</span><br></pre></td></tr></table></figure>
+
+</li>
 </ul>
 </li>
-<li><p>空间滤波器的构建</p>
-<ul>
-<li></li>
 </ul>
+<h2 id="HJ2"><a href="#HJ2" class="headerlink" title="HJ2"></a>HJ2</h2><ul>
+<li><p>题目：计算某字符出现的次数</p>
+</li>
+<li><p>思路：读入到两个变量中，遍历字串，是否和目标字符相等，若相等则 count 增1，再判断大小写的问题，大写和小写分别判断</p>
+</li>
+<li><p>代码：（低质量代码）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> str,str2;</span><br><span class="line">    <span class="comment">//读入两行内容</span></span><br><span class="line">    getline(<span class="built_in">cin</span>, str);</span><br><span class="line">    getline(<span class="built_in">cin</span>, str2);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//如相等则计数器k自增1</span></span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">size</span>(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(str[i] == str2[<span class="number">0</span>])</span><br><span class="line">        &#123;       </span><br><span class="line">            k++;</span><br><span class="line">            <span class="comment">//考虑大小写一致</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.<span class="built_in">size</span>(); i++)</span><br><span class="line">            &#123;          </span><br><span class="line">                <span class="keyword">if</span>(str2[<span class="number">0</span>] &lt;= <span class="string">'Z'</span> &amp;&amp; str2[<span class="number">0</span>] &gt;= <span class="string">'A'</span>)	<span class="comment">//如目标字符是大写，则再判断其对应的小写是否有相等的</span></span><br><span class="line">               &#123;</span><br><span class="line">                   <span class="keyword">if</span>(str[i]+<span class="number">0</span> == str2[<span class="number">0</span>] + <span class="number">32</span>)</span><br><span class="line">                       k++;</span><br><span class="line">               &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (str2[<span class="number">0</span>] &lt;= <span class="string">'z'</span> &amp;&amp; str2[<span class="number">0</span>] &gt;= <span class="string">'a'</span>)	<span class="comment">//如目标字符是小写，则再判断其对应的大写是否有相等的</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span>(str[i]+<span class="number">0</span> == str2[<span class="number">0</span>] - <span class="number">32</span>)</span><br><span class="line">                       k++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; k &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>分析：<ul>
+<li>新手，想法简单粗暴</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="HJ3"><a href="#HJ3" class="headerlink" title="HJ3"></a>HJ3</h2><ul>
+<li><p>题目：输入随机数个数及随机数，去重排序后按行输出</p>
+</li>
+<li><p>思路：（排名第一的思路，非本人想法）先确定随机数的个数（直接cin），定义一个数组，然后每次将读入的数作为数组的下标，值填充为1，然后输出数组值不为0的下标</p>
+<ul>
+<li>核心：只要有重复值，对应到数组的下标还是同一个，达到既降重又排序的目的；转换思路，输入的值是下标而非数组的值</li>
+<li>缺点：一是必须指定数组的大小是题目给定的范围，而不能动态的设置为输入随机数的个数；二是数组必须初始化，否则其中的垃圾数据会造成输入错误</li>
+</ul>
+</li>
+<li><p>代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N, n;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; N) &#123;</span><br><span class="line">        <span class="keyword">int</span> a[<span class="number">1001</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">        <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">            <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">            a[n] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1001</span>; i++)</span><br><span class="line">            <span class="keyword">if</span> (a[i])</span><br><span class="line">                <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//按上述思路重写了一下，比较容易理解和看懂</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N, n;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; N;	<span class="comment">//读入数组的大小</span></span><br><span class="line">    <span class="keyword">int</span> a[<span class="number">1001</span>] = &#123;<span class="number">0</span>&#125;;	<span class="comment">//指定大小并初始化（不管数组多小，都开辟了这么多空间）</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; n;</span><br><span class="line">        a[n] = <span class="number">1</span>;	<span class="comment">//以读入的数作为下标，有多少重复都无所谓（填充值非零均可）</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1001</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(a[i])</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;	<span class="comment">//输出数组值非零的下标</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ul>
 
@@ -511,7 +557,7 @@
           
         
           
-            <p>本文永久链接是：<a href=https://hbroad.github.io/2022/07/17/digital_image_process/>https://hbroad.github.io/2022/07/17/digital_image_process/</a></p>
+            <p>本文永久链接是：<a href=https://hbroad.github.io/2022/07/31/HuaWei/>https://hbroad.github.io/2022/07/31/HuaWei/</a></p>
           
         
       </blockquote>
@@ -532,10 +578,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-07-31T19:37:42+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-08-01T22:26:39+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年7月31日</p>
+    <p>更新于：2022年8月1日</p>
   </a>
 </div>
 
@@ -544,7 +590,7 @@
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/DIP/" rel="nofollow"><i class="fas fa-hashtag fas fa-tags" aria-hidden="true"></i><p>DIP</p></a></div>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Interview/" rel="nofollow"><i class="fas fa-hashtag fas fa-tags" aria-hidden="true"></i><p>Interview</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/" rel="nofollow"><i class="fas fa-hashtag fas fa-tags" aria-hidden="true"></i><p>华为机考</p></a></div>
 
 
         
@@ -562,7 +608,7 @@
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://connect.qq.com/widget/shareqq/index.html?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          href="http://connect.qq.com/widget/shareqq/index.html?url=https://hbroad.github.io/2022/07/31/HuaWei/&title=华为机试（牛客） - 南阳向北&summary=华为机考刷题记录，初次刷题，想法不成熟，大多直接暴力解决了"
           
           >
           
@@ -574,7 +620,7 @@
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hbroad.github.io/2022/07/31/HuaWei/&title=华为机试（牛客） - 南阳向北&summary=华为机考刷题记录，初次刷题，想法不成熟，大多直接暴力解决了"
           
           >
           
@@ -586,7 +632,7 @@
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
-          href="http://service.weibo.com/share/share.php?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）"
+          href="http://service.weibo.com/share/share.php?url=https://hbroad.github.io/2022/07/31/HuaWei/&title=华为机试（牛客） - 南阳向北&summary=华为机考刷题记录，初次刷题，想法不成熟，大多直接暴力解决了"
           
           >
           
@@ -610,8 +656,9 @@
         
           <div class="prev-next">
             
-              <a class='prev' href='/2022/07/29/data_structure/'>
-              <h6><i class="fas fa-chevron-left" aria-hidden="true"></i> 上一页</h6>
+            
+              <a class='next' href='/2022/07/29/data_structure/'>
+               <h6>下一页 <i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
                 <p class='title'>数据结构</p>
                 <!--
                 <p class='content'>数据结构理论
@@ -623,26 +670,6 @@
 性质：
 任意常数 $c &gt;0$，$O(f(n))=O(cf(n))$
 常数乘以某个运算，...</p>
-                -->
-              </a>
-            
-            
-              <a class='next' href='/2022/07/17/point_cloud_pcl/'>
-               <h6>下一页 <i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                <p class='title'>点云+PCL学习笔记</p>
-                <!--
-                <p class='content'>研究生阶段开始学习的一些笔记，存储在本地，为方便查看，现搬至博客
-（注：部分图片未上传至图床，抽空补充）
-
-
-点云
-分布在 N 维空间中的离散点集
-
-是对物体表面信息的离散采样
-
-
-点云库
-三维...</p>
                 -->
               </a>
             
@@ -707,7 +734,7 @@ window.MathJax = {
 
   <script>
     window.subData = {
-      title: '数字图像处理',
+      title: '华为机试（牛客）',
       tools: true
     }
   </script>
@@ -889,7 +916,7 @@ window.MathJax = {
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-text">空间相关与卷积</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HJ1"><span class="toc-text">HJ1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HJ2"><span class="toc-text">HJ2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HJ3"><span class="toc-text">HJ3</span></a></li></ol>
     </div>
   </section>
 
