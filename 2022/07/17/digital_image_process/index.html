@@ -22,7 +22,8 @@
   
   
     <meta name="description" content="数字图像处理基础理论（待补充）
-(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏">
+(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏
+（文中所有图片均摘自该课程）">
   
 
   <!-- feed -->
@@ -466,6 +467,7 @@
           
           <p>数字图像处理基础理论（待补充）</p>
 <p><a href="https://cv-xueba.club/" target="_blank" rel="noopener">(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏</a></p>
+<p>（文中所有图片均摘自该课程）</p>
 <a id="more"></a>
 
 <h1 id="图像去噪（滤波）"><a href="#图像去噪（滤波）" class="headerlink" title="图像去噪（滤波）"></a>图像去噪（滤波）</h1><h2 id="常见噪声"><a href="#常见噪声" class="headerlink" title="常见噪声"></a>常见噪声</h2><img src="https://s2.loli.net/2022/08/24/4JRciqsQVUoTEfL.png" alt="image-20220824111547568" style="zoom:67%;" />
@@ -613,10 +615,16 @@
 <ul>
 <li>X 方向的梯度与 Y 方向的边缘垂直，其他同理；即梯度方向与边缘垂直。<a href="http://t.csdn.cn/JaDWT" target="_blank" rel="noopener">具体可参考</a></li>
 <li>可见，梯度向量与边缘垂直，故也称为边缘法线</li>
+<li>梯度幅值的大小衡量了该点处是否是边的可能性的大小，越小，就说明 x 和 y 方向变换不明显，即接近平坦区域</li>
 <li>需要对角边缘时，即需要二维核，Robert 算子采用对角性能（详见数字图像处理第四版P516）</li>
 </ul>
 <img src="https://s2.loli.net/2022/08/24/7wzSxmbYc96Rn4W.png" alt="image-20220824201536126" style="zoom:67%;" />
 
+<p>​    上述核的功能在于其考虑了周围更多的邻域，减少了噪声的敏感性，以 Soble 算子为例，其可以分解为两个一维核：<br>$$<br>\begin{bmatrix}<br>1 \<br>2 \<br>1<br>\end{bmatrix}</p>
+<ul>
+<li>\begin{bmatrix}</li>
+</ul>
+<p>-1 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br>​    可见，Sobel 是进行了高斯滤波，再进行边缘提取，故受噪声的影响较低。</p>
 <p>注意：</p>
 <ul>
 <li><p>$3 \times 3$ 的核：最小的中心对称核，考虑了中心对侧数据的性质</p>
@@ -714,7 +722,42 @@
 </ol>
 </li>
 </ul>
-<h1 id="拟合"><a href="#拟合" class="headerlink" title="拟合"></a>拟合</h1><h2 id="最小二乘"><a href="#最小二乘" class="headerlink" title="最小二乘"></a>最小二乘</h2><h2 id="RANSAC"><a href="#RANSAC" class="headerlink" title="RANSAC"></a>RANSAC</h2><h1 id="角点检测"><a href="#角点检测" class="headerlink" title="角点检测"></a>角点检测</h1><p>为何提取需要提取特征？多视角拼接</p>
+<h1 id="拟合"><a href="#拟合" class="headerlink" title="拟合"></a>拟合</h1><h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>在获得边缘后，接下来的问题是，对于图中的特征如何进行描述，即选择参数模型进行拟合，但实际中，面临三个问题：</p>
+<ul>
+<li>噪声</li>
+<li>局外点的影响</li>
+<li>遮挡导致的数据丢失</li>
+</ul>
+<p>为此，针对不同的情况需要不同的方法</p>
+<ul>
+<li>如若知道所有点都属于一条直线，该如何找到这条最优直线？<ul>
+<li>最小二乘</li>
+</ul>
+</li>
+<li>若存在外点呢？<ul>
+<li>RANSAC</li>
+</ul>
+</li>
+<li>若这些点属于多条直线呢？<ul>
+<li>投票机制：RANSAC、Hough 变换</li>
+</ul>
+</li>
+<li>更一般的情况，不确定其是否是直线？<ul>
+<li>模型筛选</li>
+</ul>
+</li>
+</ul>
+<h2 id="最小二乘"><a href="#最小二乘" class="headerlink" title="最小二乘"></a>最小二乘</h2><h3 id="“垂直”最小二乘"><a href="#“垂直”最小二乘" class="headerlink" title="“垂直”最小二乘"></a>“垂直”最小二乘</h3><p>如图，对于 $n$ 个点，若其直线方程为 $y = mx + b$ ，则要使每个点到该直线的垂直距离最小化，方可说明这些点在该直线上</p>
+<p>于是，可建立能量函数（目标函数），并使其最小化：<br>$$<br>E=\sum_{i=1}^n (y_i -mx_i -b)^2<br>$$<br>这里之所以取平方，是因为我们只关心点到直线的距离，不关心正负。</p>
+<p>对 $n$ 个点，有<br>$$<br>\begin{cases}<br>y_1 = mx_1 + b \<br>y_2 = mx_2 + b \<br>\vdots \<br>y_n = mx_n + b<br>\end{cases}<br>$$<br>写成矩阵形式：<br>$$<br>Y = XB \<br>Y=\begin{bmatrix}<br>y_1 \<br>y_2 \<br>\vdots \<br>y_n<br>\end{bmatrix}</p>
+<p>\qquad<br>X=\begin{bmatrix}<br>x_1 &amp; 1\<br>x_2 &amp; 1\<br>\vdots &amp; \vdots \<br>x_n &amp; 1<br>\end{bmatrix}</p>
+<p>\qquad<br>B=\begin{bmatrix}<br>m \<br>b \<br>\end{bmatrix}<br>$$<br>到此，前述的能量函数变为：<br>$$<br>E = ||Y-XB||^2<br>$$<br>$B$ 为待求项，$||X||$ 为向量的模，是内部元素的平方和开根号，这也是能量函数取平方的另一个好处。对一个向量 $A = \begin{bmatrix} a_1\ a_2 \a_3 \end{bmatrix} $，有：<br>$$<br>||A|| ^2 = a_1^2 +a_2^2 + a_3^2 = A^TA<br>$$<br>故能量函数可写为：<br>$$<br>\begin{align}<br>E  &amp; = ||Y-XB||^2 =  (Y-XB)^T(Y-XB) \ &amp; \overset{展开}{=}  (Y^T-B^TX^T)(Y-XB) \ &amp; = Y^TY - Y^TXB-B^TX^TY + B^TX^TXB  \ &amp; = Y^TY-2(XB)^TY+(XB)^TXB<br>\end{align}<br>$$<br>为求 $B$，自然想到让 $E$ 对 $B$ 求导：<br>$$<br>\frac{dE}{dB} = -2X^TY + 2X^TXB = 0<br>$$<br>从而求得：<br>$$<br>B = (X^TX)^{-1}X^TY<br>$$<br><img src="https://s2.loli.net/2022/08/27/D6S5ErMeb4oNcHG.png" alt="image-20220827212852424" style="zoom: 80%;" /></p>
+<p>问题：</p>
+<ul>
+<li>当直线垂直 x 轴时，方法失效</li>
+<li>即不满足旋转不变性，直线转动到垂直时无法求解</li>
+</ul>
+<h3 id="全最小二乘"><a href="#全最小二乘" class="headerlink" title="全最小二乘"></a>全最小二乘</h3><h2 id="RANSAC"><a href="#RANSAC" class="headerlink" title="RANSAC"></a>RANSAC</h2><h1 id="角点检测"><a href="#角点检测" class="headerlink" title="角点检测"></a>角点检测</h1><p>为何提取需要提取特征？多视角拼接</p>
 <h2 id="特征提取"><a href="#特征提取" class="headerlink" title="特征提取"></a>特征提取</h2><ul>
 <li>特征的要求<ul>
 <li>可重复性：即使有几何变换等的影响，该特征仍能在多视角中找到</li>
@@ -836,10 +879,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-08-25T15:25:57+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-08-27T22:36:39+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年8月25日</p>
+    <p>更新于：2022年8月27日</p>
   </a>
 </div>
 
@@ -867,7 +910,8 @@
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
           
           href="http://connect.qq.com/widget/shareqq/index.html?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）
-(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏"
+(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏
+（文中所有图片均摘自该课程）"
           
           >
           
@@ -880,7 +924,8 @@
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
           
           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）
-(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏"
+(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏
+（文中所有图片均摘自该课程）"
           
           >
           
@@ -893,7 +938,8 @@
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
           
           href="http://service.weibo.com/share/share.php?url=https://hbroad.github.io/2022/07/17/digital_image_process/&title=数字图像处理 - 南阳向北&summary=数字图像处理基础理论（待补充）
-(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏"
+(通俗易懂的计算机视觉优质课程)北京邮电大学计算机学院-鲁鹏
+（文中所有图片均摘自该课程）"
           
           >
           
@@ -1038,7 +1084,7 @@ window.MathJax = {
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见噪声"><span class="toc-text">常见噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卷积"><span class="toc-text">卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯卷积"><span class="toc-text">高斯卷积</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯卷积的生成"><span class="toc-text">高斯卷积的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数的选取"><span class="toc-text">参数的选取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯核特性说明"><span class="toc-text">高斯核特性说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中值滤波"><span class="toc-text">中值滤波</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘"><span class="toc-text">边缘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘种类"><span class="toc-text">边缘种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测"><span class="toc-text">边缘检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像求导"><span class="toc-text">图像求导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像梯度"><span class="toc-text">图像梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际情况"><span class="toc-text">实际情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯一阶偏导核"><span class="toc-text">高斯一阶偏导核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canny-检测算子"><span class="toc-text">Canny 检测算子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最小二乘"><span class="toc-text">最小二乘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RANSAC"><span class="toc-text">RANSAC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特征提取"><span class="toc-text">特征提取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角点"><span class="toc-text">角点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Harris角点检测"><span class="toc-text">Harris角点检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不变性分析"><span class="toc-text">不变性分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斑点（Blob）检测"><span class="toc-text">斑点（Blob）检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度不变性特征检测"><span class="toc-text">尺度不变性特征检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-text">空间相关与卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间滤波器的构建"><span class="toc-text">空间滤波器的构建</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见噪声"><span class="toc-text">常见噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卷积"><span class="toc-text">卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯卷积"><span class="toc-text">高斯卷积</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯卷积的生成"><span class="toc-text">高斯卷积的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数的选取"><span class="toc-text">参数的选取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯核特性说明"><span class="toc-text">高斯核特性说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中值滤波"><span class="toc-text">中值滤波</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘"><span class="toc-text">边缘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘种类"><span class="toc-text">边缘种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测"><span class="toc-text">边缘检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像求导"><span class="toc-text">图像求导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像梯度"><span class="toc-text">图像梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际情况"><span class="toc-text">实际情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯一阶偏导核"><span class="toc-text">高斯一阶偏导核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canny-检测算子"><span class="toc-text">Canny 检测算子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引例"><span class="toc-text">引例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最小二乘"><span class="toc-text">最小二乘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#“垂直”最小二乘"><span class="toc-text">“垂直”最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全最小二乘"><span class="toc-text">全最小二乘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RANSAC"><span class="toc-text">RANSAC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特征提取"><span class="toc-text">特征提取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#角点"><span class="toc-text">角点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Harris角点检测"><span class="toc-text">Harris角点检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#不变性分析"><span class="toc-text">不变性分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斑点（Blob）检测"><span class="toc-text">斑点（Blob）检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度不变性特征检测"><span class="toc-text">尺度不变性特征检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-text">空间相关与卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间滤波器的构建"><span class="toc-text">空间滤波器的构建</span></a></li></ol>
     </div>
   </section>
 
