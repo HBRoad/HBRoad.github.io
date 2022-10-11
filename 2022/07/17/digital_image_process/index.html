@@ -1275,14 +1275,26 @@ $$ </p>
 <p>直观来看，只有当拉普拉斯核与二值圆形信号的圆一样大时，两者卷积的结果才最大（因为卷积就是信号的圆形区域与模板的圆形区域相差相加），只有两者完全重合时，卷积结果最大。</p>
 <img src="https://s2.loli.net/2022/10/07/z5KHwrjAC9shy6P.png" alt="image-20221007212701671" style="zoom:50%;" />
 
-<h3 id="尺度空间"><a href="#尺度空间" class="headerlink" title="尺度空间"></a>尺度空间</h3><p>前面我们一直在说，通过不同的 $\sigma$ 进行尺度选择，不同的 $\sigma$ 会形成不同的图像，这些不同的图像属于同一个尺度空间，即灰度图像 $f(x,y)$ 的尺度空间 $L(x,y,\sigma)$ 是 $f$ 与一个可变尺度的高斯核 $G(x,y,\sigma)$ 卷积的结果：<br>$$<br>L(x,y,\sigma) = G(x,y,\sigma) \star f(x,y)<br>$$<br>其中，$\sigma$ 控制尺度，$f$ 依次与标准差为 $\sigma、k\sigma、k^2\sigma、k^3\sigma、\dots$ 的高斯核卷积，便可生成一堆由常量因子 $k$ 分隔的高斯平滑图像（如下图）。</p>
+<h3 id="尺度空间"><a href="#尺度空间" class="headerlink" title="尺度空间"></a>尺度空间</h3><p>前面我们一直在说，通过不同的 $\sigma$ 进行尺度选择，不同的 $\sigma$ 会形成不同的图像，这些不同的图像属于同一个尺度空间，即灰度图像 $f(x,y)$ 的尺度空间 $L(x,y,\sigma)$ 是 $f$ 与一个可变尺度的高斯核 $G(x,y,\sigma)$ 卷积的结果：<br>$$<br>L(x,y,\sigma) = G(x,y,\sigma) \star f(x,y)<br>$$<br>其中，$\sigma$ 控制尺度，$f$ 依次与标准差为 $\sigma、k\sigma、k^2\sigma、k^3\sigma、\dots$ 的高斯核卷积，便可生成一堆由常量因子 $k$ 分隔的高斯平滑图像（如下图），即模糊程度不断变化，能模拟人眼由近到远时目标在视网膜上的形成过程。</p>
+<p>$\sigma$ 连续变化时，便可形成该图像的一个尺度空间（Lindeberg等人已证明高斯卷积核是实现尺度变换的唯一变换核，并且是唯一的线性核）</p>
 <img src="https://s2.loli.net/2022/10/07/dqk5sGYSbQDLiKw.png" alt="image-20221007220903465" style="zoom:67%;" />
 
-<p>尺度空间中，只比较上下两个相邻的尺度空间，即比较相邻 27 个点，保留最大的那个（非最大化抑制）</p>
-<h3 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h3><ul>
-<li>DOG：高斯差分近似拉普拉斯</li>
-<li>利用高斯核的可分离性</li>
-</ul>
+<p>尺度空间中，只比较上下两个相邻的尺度空间，即比较相邻 27 个点，保留最大的那个（非极大值抑制）</p>
+<p>如前述所述，需要不同的尺度空间，随着 $\sigma$ 的增大，高斯核半径增大，计算量（乘法和加法）增加，显然效率不会很高。</p>
+<h3 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h3><p>我们已经知道了拉普拉斯函数，其计算较为复杂，但前辈们发现，该函数可用 <strong>高斯差分(DoG)</strong> 近似：</p>
+<p>LoG：<br>$$<br>L=\sigma^2(G_{xx}(x,y,\sigma)+G_{yy}(x,y,\sigma))<br>$$<br>DoG：<br>$$<br>DoG=G(x,y,k\sigma)-G(x,y,\sigma)<br>$$<br>实验证明，对 LoG 进行一定的校正就可以通过 DoG 近似，性能基本相同。<br>$$<br>DoG=G(x,y,k\sigma)-G(x,y,\sigma) \approx (k-1)\sigma^2 \nabla^2G(x,y)<br>$$<br><img src="https://s2.loli.net/2022/10/10/RY5jihBF19sl2mX.png" alt="image-20221010204720084" style="zoom:50%;" /></p>
+<p>使用高斯差分近似的一大好处是，高斯核是可分离的，大的卷积核卷积的结果可以由两个小的卷积核完成。这样一来，我们不用让不同的核都与原图卷积，而是可以在现有卷积的基础上继续卷积。</p>
+<p>举个例子：</p>
+<p><img src="https://s2.loli.net/2022/10/10/TzlwgD7SEjFsAHy.png" alt="image-20221010221757508"></p>
+<p>这样做的好处显而易见，如果所有尺度都与原图卷积，随着尺度增大，计算量不断增大，如果在已有的结果上卷积，显然模糊半径小，这是 SIFT 特征检测的关键之一，即提速。</p>
+<p>为了构建尺度空间，利用高斯金字塔实现，包括对原图像在多尺度下<strong>高斯卷积</strong>及<strong>降采样</strong>得到。其中，相同的分辨率的图像组成一个尺度空间（作者采用了每个尺度空间 6 张递增的高斯卷积结果图），每个尺度空间称为一个组（Octave），下一组的最底层图像由上一层的倒数第三张图下采样得到（一般是间隔采样，即隔离一个像素取一个，即缩小一半），从而形成了高斯差分金字塔。这是关键之二，这里的核心在于，对原图用 $\sigma$ 卷积，和 将原图缩小一半，再用 $\sigma$ 卷积，结果 *2 一致。</p>
+<p>举个例子，原图中 10 mm 的圆，我用同样大小的 $\sigma$ 卷积；另一种方案是，原图缩小一半，即待检测的圆只有 5mm 了，我仍然用前述的 $\sigma$ 卷积，卷积后的结果是 5mm 的圆，*2 后就是原图中 10mm 的圆。这样做的好处在于，同样的核，但图像缩小了，速度也就上来了。</p>
+<img src="https://s2.loli.net/2022/10/10/OUelQiu4ZbRsdY8.png" alt="image-20221010215446390" style="zoom:67%;" />
+
+<p>如上图所示，第一组有 5 层，可生成 4 层 DoG 尺度空间，这 4 层经过非极大值抑制可得到 2 个尺度，其他组同理。问题是，如何让不同组（Octave）的尺度形成连续的尺度空间？</p>
+<p>经过研究发现，只有当输出的尺度图像数与 k 之间的关系为 $k=s^{\frac{1}{2}}$ 时，方可形成连续尺度空间。</p>
+<p>以上图为例，第一组经过非极大值抑制后得到 $k\sigma$、$k^2\sigma$，同理第二组为  $2k\sigma$、$2k^2\sigma$，输出 2 张尺度图像，即 $k=2^{\frac{1}{2}}$，带入可发现其形成了连续的尺度空间 $\sqrt{2}\sigma、2\sigma、2\sqrt{2}\sigma、4\sigma$。还可发现，要是最终输出 $s$ 张尺度图像，就得有 $s+2$ 张 DoG，$s+3$ 张 LoG。</p>
+<p>上述即为 SIFT 的所有内容，下面进行总结。</p>
 <p>SIFT 确立的特征点不会因为视角的改变（尺度变化和旋转变化）、光照的变化（亮度变化）、噪音的干扰（噪声干扰）而消失。</p>
 <p>SIFT 的实现包括以下几个步骤</p>
 <ul>
@@ -1326,8 +1338,8 @@ $$ </p>
 <p><img src="https://s2.loli.net/2022/10/09/usZyHrLzKOolSQg.png" alt="clip_image002[4]"></p>
 <p>Retinex 理论的基本假设是：原始图像 $S$ 是由光照图像 (照度图像) $L$、反射图像 $R$ 组成，前者是物体的入射分量的信息，表示为 $L(x,y)$，后者是物体的反射部分，表示为 $R(x,y)$，所以图像 $S$ 可表示为：<br>$$<br>S(x,y)=R(x,y)L(x,y)<br>$$<br>Retinex 增强的目的就是从原始图像 $S$ 中估计出 $L$，从而分解出 $R$，消除光照不均的影响，以改善图像的视觉效果。由于人眼感受亮度的过程与对数形式的变换相似，所以将上式转到对数域，这样做的一个好处是将复杂的乘法转为了加法：<br>$$ 
 \begin{align}
-logS & = log(RL) \\
-& = logR+logL
+logS & = log(RL) \notag \\	
+& = logR+logL	\notag
 \end{align}
 $$ <br>可见，如若估计得到 $L$，就可求得 $R$。</p>
 <p>关键是如何得到 $L$ 呢？该值显然不能直接求得，那就只能近似。Retinex 的提出者认为，$L$ 可由<font color = red>原始图像和高斯核卷积</font>得到，即：<br>$$<br>logR=logS-logS * G<br>$$<br>$G$ 即为高斯卷积核。</p>
@@ -1414,10 +1426,10 @@ $$ <br>可见，如若估计得到 $L$，就可求得 $R$。</p>
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-10-09T22:34:19+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-10-10T22:58:05+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年10月9日</p>
+    <p>更新于：2022年10月10日</p>
   </a>
 </div>
 
