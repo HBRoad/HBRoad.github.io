@@ -5,6 +5,8 @@
   <!-- SEO相关 -->
   
     
+      <meta name="robots" content="noindex,follow">
+    
   
   <!-- 渲染优化 -->
   <meta name="renderer" content="webkit">
@@ -16,7 +18,7 @@
 
   <!-- 页面元数据 -->
   
-    <title>Vrep/UR5_VREP仿真 - 南阳向北</title>
+    <title>标签：UR5 - 南阳向北</title>
   
   
 
@@ -364,12 +366,25 @@
     <div class='body-wrapper'>
       
 
+
 <div class='l_main'>
   
-
-  
-    <article id="post" class="post white-box blur article-type-post" itemscope itemprop="blogPost">
+    
       
+  <section class="post-list ">
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+          <div class='post-wrapper'>
+            <article class="post white-box blur reveal ">
+  
 
 
   <section class='meta'>
@@ -378,13 +393,11 @@
     <div class="meta" id="header-meta">
       
         
-  
-    <h1 class="title">
-      <a href="/2022/11/18/undefined/">
-        Vrep/UR5_VREP仿真
-      </a>
-    </h1>
-  
+  <h2 class="title">
+    <a href="/2022/11/18/ur5_vrep_simu/">
+      UR5_Vrep 仿真
+    </a>
+  </h2>
 
 
       
@@ -415,36 +428,29 @@
         
           
             
-
-          
-        
-          
-            
-
-          
-        
-          
-            
-
-          
-        
-          
-            
   
-    <div class="new-meta-item browse valine">
-      <a class='notlink'>
-        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
-        <span id="/2022/11/18/undefined/" class="leancloud_visitors" data-flag-title="Vrep/UR5_VREP仿真">
-        <p>
-          <span class="leancloud-visitors-count">
-            <i class="fas fa-spinner fa-spin fa-fw" aria-hidden="true"></i>
-          </span>
-        </p>
-        </span>
-      </a>
-    </div>
-  
+  <div class='new-meta-item category'>
+    <a href='/categories/simulation/' rel="nofollow">
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <p>simulation</p>
+    </a>
+  </div>
 
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+          
+            
 
           
         
@@ -456,252 +462,61 @@
   </section>
 
 
-      <section class="article typo">
-        <div class="article-entry" itemprop="articleBody">
-          
-          <h2 id="逆运动学dummy"><a href="#逆运动学dummy" class="headerlink" title="逆运动学dummy"></a>逆运动学dummy</h2><ul>
-<li><p>dummy 解释</p>
-<p><a href="https://zhuanlan.zhihu.com/p/157701389" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/157701389</a></p>
-</li>
-<li><p>dummy  的添加</p>
-<ul>
-<li>添加一个dummy，dummy在V-REP 中是最简单的模型。然后调整其位置到（-3.7658e-1，+0e+0，+1.0013e+0），注意此时我们假设你的UR的坐标是（+0e+0，+0e+0，+1.4650e-2）。如果你调整的UR的位置，那么这个dummy的位置也需要左相应的调整。当然也没有这么死板，只要将其放在你认为的夹持器工作中心即可。然后将其重命名为 UR5_tip。</li>
-<li>所以demo 中的 UR5_Tip 在夹爪中心的原因是其平移过去而非直接与夹爪相连</li>
-</ul>
-</li>
-<li><p>逆运动学计算方法：伪逆（不稳定但快速）、DLS（稳定但慢）</p>
-</li>
-</ul>
-<ul>
-<li>vrep 中编辑 path 时可能出现部分视角看不到完整路径的情况，可新建一场景，编辑后再导入，注意不要更改其位置</li>
-</ul>
-<h2 id="Geomagic-提取模型合模线"><a href="#Geomagic-提取模型合模线" class="headerlink" title="Geomagic 提取模型合模线"></a>Geomagic 提取模型合模线</h2><ul>
-<li><p>分别选择两个平面拟合平面特征（也可直接选择探测特征，但效果一般）</p>
-</li>
-<li><p>选择 特征-平面-两平面平均 创建合模线所在平面</p>
-</li>
-<li><p>选择 曲线-从截面创建，创建平面所经过的曲线，即为合模线</p>
-</li>
-<li><p>选择 曲线-创建点，合模线离散为点，后续用于路径规划</p>
-</li>
-</ul>
-<h2 id="Geomagic-与-Vrep-数据转换"><a href="#Geomagic-与-Vrep-数据转换" class="headerlink" title="Geomagic 与 Vrep 数据转换"></a>Geomagic 与 Vrep 数据转换</h2><ul>
-<li><p>两者导出到文件的数据单位都是 m</p>
-</li>
-<li><p>由 Vrep 导出后，导入到 Geomagic 中时选择单位必须为 m，否则轨迹不正确</p>
-</li>
-<li><p>关于模型的缩放</p>
-<ul>
-<li><p>先将扫描得到的 CAD 模型直接导入到 Vrep，可以观察到大小完全不是一个等级，这时候就要缩放，缩放因子设置为 $0.5^n$，这里需要不断调节直到合适的大小</p>
-</li>
-<li><p>缩放的验证：比如设置缩放因子为 $0.5^8$，此即为将原模型缩放了 256 $(1/0.5^8)$倍， 选取轨迹上两点并测量其距离，距离的缩放应满足该倍数关系</p>
-</li>
-</ul>
-</li>
-<li><p>关于最终轨迹的生成</p>
-<ul>
-<li><p>首先将原模型导入，通过设置位置坐标将其移动到机器人基坐标系下（这里可直接输入机器人的基坐标系位置）</p>
-</li>
-<li><p>设置缩放因子缩放到合适的大小，并旋转到合适的位置</p>
-</li>
-<li><p>导出上述缩放后的模型（记住导出的轴哪个向上），并重新导入（注意选择与导出时相同的向上轴），再次导出作为最终的模型，此时的模型重新导入时坐标方向是一致的（原因未知）</p>
-</li>
-<li><p>导入 Geomagic，选择并拟合两个平面，通过拟合的两平面建立中间的平面（即合模线所在平面），通过截面创建曲线，生成点，删除多余的点</p>
-</li>
-</ul>
-</li>
-</ul>
-<p>拟合两个平面：</p>
-<img src="https://s2.loli.net/2022/11/25/iJA2wG5mTxcezh4.png" style="zoom: 67%;" />
-
-<p>取合模线所在平面：</p>
-<img src="https://s2.loli.net/2022/11/25/Ee17l36XjGn5Rwb.png" style="zoom: 67%;" />
-
-<p>截面创建轨迹：</p>
-<img src="https://s2.loli.net/2022/11/25/k1QCPw93tcWjrvU.png" style="zoom: 50%;" />
-
-<p>轨迹线转为点：</p>
-<img src="https://s2.loli.net/2022/11/25/qFPz7NXrtipUKxI.png" style="zoom: 50%;" />
-
-<ul>
-<li>导出的点是无序的，可以将数据在 Origin 中画出来，按顺序排好后再导入到 Vrep，此时的轨迹和前述的模型应当是匹配的，在 Vrep 中可以将其设置为模型的从属</li>
-</ul>
-<p>无序点（显示的标签为行号）：</p>
-<img src="https://s2.loli.net/2022/11/25/LXWARHTiYtEmnrq.png" alt="image-20221125194657292" style="zoom: 50%;" />
-
-<p>排序结果：</p>
-<p><img src="https://s2.loli.net/2022/11/25/jMaw4Z3oyNhscYI.png" alt="image-20221125194952450"></p>
-
-          
-            <br>
-            
-  
-    
-    
-
-<section class="widget copyright  desktop mobile">
-  <div class='content'>
-    
-      <blockquote>
-        
-          
-            <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
-
-          
-        
-          
-            <p>本文永久链接是：<a href=https://hbroad.github.io/2022/11/18/undefined/>https://hbroad.github.io/2022/11/18/undefined/</a></p>
-          
-        
-      </blockquote>
-    
-  </div>
-</section>
-
-  
-
-
-          
-        </div>
-        
-          
-
-
-  <section class='meta' id="footer-meta">
-    <div class='new-meta-box'>
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>UR5 结合  Coppeliasim（旧Vrep） 的仿真相关操作记录</p>
+      
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-11-25T19:52:17+08:00">
-  <a class='notlink'>
-    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年11月25日</p>
-  </a>
-</div>
-
-        
-      
-        
-          
-
-        
-      
-        
-          
-
-        
-      
-        
-          
-  <div class="new-meta-item share -mob-share-list">
-  <div class="-mob-share-list share-body">
-    
-      
-        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer"
-          
-          href="http://connect.qq.com/widget/shareqq/index.html?url=https://hbroad.github.io/2022/11/18/undefined/&title=Vrep/UR5_VREP仿真 - 南阳向北&summary="
-          
-          >
-          
-            <img src="https://s2.loli.net/2022/08/02/HQ2vMiA6BOg8Vum.png">
-          
-        </a>
-      
-    
-      
-        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer"
-          
-          href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hbroad.github.io/2022/11/18/undefined/&title=Vrep/UR5_VREP仿真 - 南阳向北&summary="
-          
-          >
-          
-            <img src="https://s2.loli.net/2022/08/02/Jrfx7ZhuA6LmIOT.png">
-          
-        </a>
-      
-    
-      
-        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer"
-          
-          href="http://service.weibo.com/share/share.php?url=https://hbroad.github.io/2022/11/18/undefined/&title=Vrep/UR5_VREP仿真 - 南阳向北&summary="
-          
-          >
-          
-            <img src="https://s2.loli.net/2022/08/02/1bqKo4MSClXNeGY.png">
-          
-        </a>
-      
-    
-  </div>
-</div>
-
-
-
+          <div class="button readmore">
+            <a href="/2022/11/18/ur5_vrep_simu/">
+              <i class="fas fa-book-open fa-fw"></i> 阅 读 全 文
+            </a>
+          </div>
         
       
     </div>
   </section>
+</article>
 
-
-        
-        
-          <div class="prev-next">
-            
-            
-              <a class='next' href='/2022/09/08/null/'>
-               <h6>下一页 <i class="fas fa-chevron-right" aria-hidden="true"></i></h6>
-                <p class='title'>面试问题</p>
-                <!--
-                <p class='content'>
-  738c9bd1e95cfc46d04fc0fe0d97f4378cdaa402e7d3c1dc37a22ccbba15c36e7412fbc5113ce4c62a626823664f9d...</p>
-                -->
-              </a>
-            
           </div>
         
-      </section>
-    </article>
+      
+    
+  </section>
   
-
-  
-    <!-- 显示推荐文章和评论 -->
-
-
-
-  <article class="post white-box comments blur">
-    <section class="article typo">
-      <p ct><i class='fas fa-comments'></i> 评论</p>
-      
-      
-      
-      
-      
-        <section id="comments">
-          <div id="valine_container" class="valine_thread">
-            <i class="fas fa-spinner fa-spin fa-fw"></i>
-          </div>
-        </section>
-      
-    </section>
-  </article>
-
-
-  
-
-
-
-
-<!-- 根据页面mathjax变量决定是否加载MathJax数学公式js -->
-
-
-
-  <script>
-    window.subData = {
-      title: 'Vrep/UR5_VREP仿真',
-      tools: true
+    
+    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
+    
+    
+      <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    tags: "ams",
+    macros: {
+      href: "{}"
     }
-  </script>
+  },
+  options: {
+    ignoreHtmlClass: "tex2jax_ignore|dno",
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+    
+
+  
 
 
+    
+  
 </div>
 <aside class='l_side'>
   
@@ -709,21 +524,172 @@
     
     
 
+<section class="widget blogger blur desktop">
+  <div class='content'>
+    
+      <div class='avatar'>
+        <img class='avatar' src='https://s2.loli.net/2022/08/02/jlaUZME3X7NKBDV.jpg'/>
+      </div>
+    
+    
+      <div class='text'>
+        
+          <h2>南  阳  向  北</h2>
+        
+        
+          <p>Just  do  it!</p>
 
-  <section class="widget toc-wrapper blur desktop mobile">
+        
+        
+      </div>
+    
+    
+      <div class="social-wrapper">
+        
+          
+        
+          
+            <a href="mailto:lhbmq@hnu.edu.cn"
+              class="social fas fa-envelope flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://hbroad.github.io/"
+              class="social fab fa-github flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="tencent://message/?uin=1746469211&Site=&Menu=yes"
+              class="social fab fa-qq flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+          
+            <a href="https://music.163.com/#/playlist?id=2455547327"
+              class="social fas fa-headphones-alt flat-btn"
+              target="_blank"
+              rel="external nofollow noopener noreferrer">
+            </a>
+          
+        
+      </div>
+    
+  </div>
+</section>
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget category blur desktop">
     
   <header>
     
-      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+      <a href='/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
     
   </header>
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#逆运动学dummy"><span class="toc-number">1.</span> <span class="toc-text">逆运动学dummy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Geomagic-提取模型合模线"><span class="toc-number">2.</span> <span class="toc-text">Geomagic 提取模型合模线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Geomagic-与-Vrep-数据转换"><span class="toc-number">3.</span> <span class="toc-text">Geomagic 与 Vrep 数据转换</span></a></li></ol>
+      <ul class="entry navigation">
+        
+          <li><a class="flat-box"
+            title="/categories/Commemorate/" href="/categories/Commemorate/"
+            id="categoriesCommemorate"
+            ><div class='name'>Commemorate</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/cpp/" href="/categories/cpp/"
+            id="categoriescpp"
+            ><div class='name'>cpp</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/hexo/" href="/categories/hexo/"
+            id="categorieshexo"
+            ><div class='name'>hexo</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/simulation/" href="/categories/simulation/"
+            id="categoriessimulation"
+            ><div class='name'>simulation</div><div class='badge'>(1)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E5%88%B7%E9%A2%98/" href="/categories/%E5%88%B7%E9%A2%98/"
+            id="categoriesE588B7E9A298"
+            ><div class='name'>刷题</div><div class='badge'>(4)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E6%AF%95%E8%AE%BE/" href="/categories/%E6%AF%95%E8%AE%BE/"
+            id="categoriesE6AF95E8AEBE"
+            ><div class='name'>毕设</div><div class='badge'>(2)</div></a></li>
+        
+          <li><a class="flat-box"
+            title="/categories/%E7%AC%94%E8%AE%B0/" href="/categories/%E7%AC%94%E8%AE%B0/"
+            id="categoriesE7AC94E8AEB0"
+            ><div class='name'>笔记</div><div class='badge'>(1)</div></a></li>
+        
+      </ul>
     </div>
   </section>
 
+
+  
+
+  
+    
+    
+  
+
+  <section class="widget tagcloud blur desktop mobile">
+    
+  <header>
+    
+      <a href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+    
+  </header>
+
+
+    <div class='content'>
+      <a href="/tags/Commemorate/" style="font-size: 14px; color: #999">Commemorate</a> <a href="/tags/Coppeliasim-Vrep/" style="font-size: 14px; color: #999">Coppeliasim/Vrep</a> <a href="/tags/DIP/" style="font-size: 14px; color: #999">DIP</a> <a href="/tags/Interview/" style="font-size: 24px; color: #555">Interview</a> <a href="/tags/Leetcode/" style="font-size: 20.67px; color: #6c6c6c">Leetcode</a> <a href="/tags/PCL/" style="font-size: 14px; color: #999">PCL</a> <a href="/tags/Point-Cloud/" style="font-size: 14px; color: #999">Point Cloud</a> <a href="/tags/UR5/" style="font-size: 14px; color: #999">UR5</a> <a href="/tags/git/" style="font-size: 14px; color: #999">git</a> <a href="/tags/hexo/" style="font-size: 14px; color: #999">hexo</a> <a href="/tags/simulation/" style="font-size: 14px; color: #999">simulation</a> <a href="/tags/%E5%8D%8E%E4%B8%BA%E6%9C%BA%E8%80%83/" style="font-size: 14px; color: #999">华为机考</a> <a href="/tags/%E6%AF%95%E8%AE%BE/" style="font-size: 17.33px; color: #828282">毕设</a> <a href="/tags/%E7%82%B9%E4%BA%91/" style="font-size: 14px; color: #999">点云</a> <a href="/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 14px; color: #999">面试</a>
+    </div>
+  </section>
+
+
+  
+
+  
+    
+    
+
+<section class="widget qrcode blur desktop">
+  
+  <header>
+    
+      <i class="fab fa-weixin fa-fw fa-fw" aria-hidden="true"></i><span class='name'>微信公众号</span>
+    
+  </header>
+
+
+  <div class='content article-entry'>
+    
+      
+        <div class='fancybox'><img src='https://s2.loli.net/2022/08/23/LaJqogHM3WOiAD6.jpg'
+        ></div>
+      
+    
+  </div>
+</section>
 
   
 
@@ -764,6 +730,7 @@ setInterval("createtime()",250);
 </script>
 
   </footer>
+
 
 
 
@@ -866,36 +833,6 @@ setInterval("createtime()",250);
 
 
 
-
-  
-    
-<script src="https://cdn.jsdelivr.net/gh/xaoxuu/cdn-volantis@2.4.0/js/valine.js"></script>
-
-  
-  <script>
-  var GUEST_INFO = ['nick','mail','link'];
-  var guest_info = 'nick,mail,link'.split(',').filter(function(item){
-    return GUEST_INFO.indexOf(item) > -1
-  });
-  var notify = 'true' == 'true';
-  var verify = 'true' == 'true';
-  var valine = new Valine();
-  valine.init({
-    el: '#valine_container',
-    notify: notify,
-    verify: verify,
-    guest_info: guest_info,
-    
-    appId: "D08WOirJLYeYsVbBUOfdWPpf-gzGzoHsz",
-    appKey: "fnC4nL5p8dhLXMMTpu8jXX8O",
-    placeholder: "说点什么吧~",
-    pageSize:'10',
-    avatar:'identicon',
-    lang:'zh-cn',
-    visitor: 'true',
-    highlight:'true'
-  })
-  </script>
 
 
 
