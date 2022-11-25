@@ -684,7 +684,7 @@
 <li>数据成员：属性<ul>
 <li>类中数据成员的类型任意，包括另一个类的对象</li>
 <li>虽自身类的对象不能作为数据成员（因为类还没定义完成，该类型没法分配存储空间），但自身类的指针或引用可以（任意类型的指针大小是确定的）</li>
-<li>类体内不能对数据初始化，初始化由构建函数完成</li>
+<li>类体内不能对数据初始化，初始化由构造函数完成</li>
 </ul>
 </li>
 <li>成员函数：行为<ul>
@@ -709,7 +709,7 @@
 <li><p>对象的成员及其访问</p>
 <ul>
 <li><p><code>.</code> 运算符：访问一般对象的成员（数据成员或成员函数），也可访问对象引用或对象数组的成员，方法一致</p>
-  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">			<span class="keyword">int</span> hour;</span><br><span class="line">			<span class="function"><span class="keyword">void</span> <span class="title">settime</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line">Time T1;</span><br><span class="line">T1.hour;</span><br><span class="line">T1.settime();</span><br></pre></td></tr></table></figure>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Time</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">			<span class="keyword">int</span> hour;</span><br><span class="line">			<span class="function"><span class="keyword">void</span> <span class="title">settime</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line">Time T1;</span><br><span class="line">T1.hour;</span><br><span class="line">T1.settime();</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>-&gt;</code>运算符：访问一个指针变量所指向的对象成员，等价于 <code>(*对象指针名).成员</code></p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Time T1;</span><br><span class="line">Time* T2 = T1;</span><br><span class="line"><span class="comment">//对象指针变量 T2 的成员访问</span></span><br><span class="line">T2 -&gt; hour;</span><br><span class="line">T2 -&gt; settime();</span><br><span class="line"><span class="comment">//或</span></span><br><span class="line">(*T2).hour;</span><br><span class="line">(*T2).settime;</span><br></pre></td></tr></table></figure>
@@ -954,7 +954,7 @@
 <td></td>
 </tr>
 <tr>
-<td>- 派生类中可访问基类中中的公有和保护成员</td>
+<td>- 派生类中可访问基类中的公有和保护成员</td>
 <td></td>
 <td></td>
 <td></td>
@@ -1332,10 +1332,10 @@
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-08-23T15:51:07+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-10-19T10:38:06+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年8月23日</p>
+    <p>更新于：2022年10月19日</p>
   </a>
 </div>
 
@@ -1783,5 +1783,6 @@ setInterval("createtime()",250);
 <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
 <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
 <script type="text/javascript" src="/js/fireworks.js"></script>
+
 
 

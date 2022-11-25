@@ -1281,7 +1281,7 @@ $$ </p>
 
 <p>尺度空间中，只比较上下两个相邻的尺度空间，即比较相邻 27 个点，保留最大的那个（非极大值抑制）</p>
 <p>如前述所述，需要不同的尺度空间，随着 $\sigma$ 的增大，高斯核半径增大，计算量（乘法和加法）增加，显然效率不会很高。</p>
-<h3 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h3><p>我们已经知道了拉普拉斯函数，其计算较为复杂，但前辈们发现，该函数可用 <strong>高斯差分(DoG)</strong> 近似：</p>
+<h2 id="SIFT"><a href="#SIFT" class="headerlink" title="SIFT"></a>SIFT</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>我们已经知道了拉普拉斯函数，其计算较为复杂，但前辈们发现，该函数可用 <strong>高斯差分(DoG)</strong> 近似：</p>
 <p>LoG：<br>$$<br>L=\sigma^2(G_{xx}(x,y,\sigma)+G_{yy}(x,y,\sigma))<br>$$<br>DoG：<br>$$<br>DoG=G(x,y,k\sigma)-G(x,y,\sigma)<br>$$<br>实验证明，对 LoG 进行一定的校正就可以通过 DoG 近似，性能基本相同。<br>$$<br>DoG=G(x,y,k\sigma)-G(x,y,\sigma) \approx (k-1)\sigma^2 \nabla^2G(x,y)<br>$$<br><img src="https://s2.loli.net/2022/10/10/RY5jihBF19sl2mX.png" alt="image-20221010204720084" style="zoom:50%;" /></p>
 <p>使用高斯差分近似的一大好处是，高斯核是可分离的，大的卷积核卷积的结果可以由两个小的卷积核完成。这样一来，我们不用让不同的核都与原图卷积，而是可以在现有卷积的基础上继续卷积。</p>
 <p>举个例子：</p>
@@ -1294,9 +1294,52 @@ $$ </p>
 <p>如上图所示，第一组有 5 层，可生成 4 层 DoG 尺度空间，这 4 层经过非极大值抑制可得到 2 个尺度，其他组同理。问题是，如何让不同组（Octave）的尺度形成连续的尺度空间？</p>
 <p>经过研究发现，只有当输出的尺度图像数与 k 之间的关系为 $k=s^{\frac{1}{2}}$ 时，方可形成连续尺度空间。</p>
 <p>以上图为例，第一组经过非极大值抑制后得到 $k\sigma$、$k^2\sigma$，同理第二组为  $2k\sigma$、$2k^2\sigma$，输出 2 张尺度图像，即 $k=2^{\frac{1}{2}}$，带入可发现其形成了连续的尺度空间 $\sqrt{2}\sigma、2\sigma、2\sqrt{2}\sigma、4\sigma$。还可发现，要是最终输出 $s$ 张尺度图像，就得有 $s+2$ 张 DoG，$s+3$ 张 LoG。</p>
+<p><em>前述中你可能会问为什么下一组的第一张图示上一组的倒数第三张下采样得到的？看完上面这个例子就显而易见了，我们最终输出 2 张尺度图像，对应的 DOG 有 4 层，4 层中的最底层不能参与特征值的提取，而 DOG 的最底层对应高斯尺度空间的最下面两层，也就是这两层，所以本尺度空间的关键信息点均在倒数第三层</em></p>
 <p>上述即为 SIFT 的所有内容，下面进行总结。</p>
-<p>SIFT 确立的特征点不会因为视角的改变（尺度变化和旋转变化）、光照的变化（亮度变化）、噪音的干扰（噪声干扰）而消失。</p>
-<p>SIFT 的实现包括以下几个步骤</p>
+<h3 id="不变性分析-1"><a href="#不变性分析-1" class="headerlink" title="不变性分析"></a>不变性分析</h3><ul>
+<li><p>拉普拉斯响应满足（旋转、缩放）不变性：即不论特征点有无缩放、旋转，都能检测到</p>
+</li>
+<li><p>特征的定位满足（旋转、缩放）协变性：特征都能检测到，但是匹配需要经过旋转、平移等操作</p>
+</li>
+<li><p>视角变化如何（仿射适应性）</p>
+<p>如图，SIFT 只能输出图中的白色圆特征，但是右图视角变化后，很明显白色圈中的内容发生了变化，这样会导致后续匹配出问题，因而我们希望 SIFT 输出的是黄色圈，这样即使视角变化，其检测的特征还是一致的，匹配更有利。</p>
+</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/12/GvY1AMBW4FmnQ9R.png" alt="image-20221012204932015" style="zoom:67%;" />
+
+<p>如何实现这样的效果呢？</p>
+<p>回顾 Harris 角点检测的部分，其利用了二阶矩矩阵判断梯度变化，二阶矩矩阵的特征值的大小表征了两个方向上梯度变化的快慢。设想这样一种情况，如果左右图像检测到的特征完全一致的话，对应的二阶矩矩阵的椭圆应该是圆形的，因为其在两个方向上的梯度变化是一致的。</p>
+<p>换句话说，以上左图黄色圈为例，其在椭圆长短轴方向的梯度变化基本是一致的了（图中头部），此时对应到二阶矩矩阵的椭圆就是圆了。</p>
+<p>为了达到黄色椭圆的效果（说白了就是抠图扣得准确一点），可以先计算出二阶矩矩阵的特征值，然后将梯度方向变化小的反向向内收缩，直至其变成圆，达到各个方向梯度变化一致，此时 SIFT 输出的就是上图黄色椭圆部分。</p>
+<img src="https://s2.loli.net/2022/10/12/o8jWzOYSKtVlfBc.png" alt="image-20221012213518931" style="zoom:50%;" />
+
+<p><em>注意：这里所说的是二阶矩矩阵的椭圆变成了圆，不是 SIFT 的特征输出了圆</em></p>
+<h3 id="SIFT-特征描述子"><a href="#SIFT-特征描述子" class="headerlink" title="SIFT 特征描述子"></a>SIFT 特征描述子</h3><p>现在我们有了仿射适应性，如何知道输出的特征是否是一致的呢？即如何对两幅图像检测到的特征进行比对？</p>
+<p>在尺度变化后，我们在两幅图像上检测到了大小不同的特征，为方便比较，我们进行归一化操作，即将特征转为大小一致的单位圆</p>
+<img src="https://s2.loli.net/2022/10/12/IKn5zUc1XYumyAO.png" alt="image-20221012214718287" style="zoom: 67%;" />
+
+<p>归一化后，角度还是不一致，为了匹配，必须将其转到一致的方向，即消除旋转。</p>
+<p>为此，提出梯度方向直方图的方法。具体做法是：我们在归一化后的窗口内，计算梯度幅值和方向，将 $0-360°$ 的方向划分为 8 份（下图画错了，只有 7 份），幅值是多少，直方图的值就加多少，给哪个块投票由方向角度决定（例如，某一像素点的梯度方向为17.856 度，那么这个点应该归入10-19 度这一区域），选取直方图中最大的方向作为主方向。</p>
+<img src="C:\Users\lenovo\AppData\Roaming\Typora\typora-user-images\image-20221012214945630.png" alt="image-20221012214945630" style="zoom:67%;" />
+
+<p>这个主方向与水平方向的夹角就是需要旋转的角度，对两张图都旋转到水平方向，从而消除旋转角度。</p>
+<img src="https://s2.loli.net/2022/10/12/TrBnSG5FvZ8pIcP.png" alt="image-20221012221549374" style="zoom:67%;" />
+
+<p>到此，我们完成尺度、旋转、角度的检测， 还剩下一个光照变化如何应对？SIFT 将经过前述变换的结果综合成为一个特征描述符，形成一个更加鲁棒的特征检测器。具体做法是：将检测特征圆区域划分成 16 个小区域，在每个小区域里面统计前述的梯度方向直方图，量化为 8 份的话，就会有 8 个方向，作为该小区域的描述子，故总共为 $16*8=128$ 维的描述符，两幅图像都如此，在比对时只需计算对应位置的 $L2$ 距离来判断相似性。</p>
+<p>至于为什么划分为 16 块小区域，直方图 8 份，这就是作者实验的结果了，不过我们可以直观的理解，和 Harris 参数空间的划分类似，过大过小都不是好事。</p>
+<ul>
+<li><p><font color =red>邻域方向性信息联合的思想即增强了SIFT 算法的抗噪声能力，同时又对含有定位误差的特征匹配提供了很好 的容错性</font></p>
+</li>
+<li><p>实时性不高</p>
+</li>
+<li><p>有时特征点较少</p>
+</li>
+<li><p>对边缘光滑的目标无法准确提取特征点</p>
+</li>
+<li><p>对模糊的图像和边缘平滑的图像，检测出的特征点过少，对圆更是无能为力。近来不断有人改进，其中最著名的有SURF和CSIFT。</p>
+</li>
+</ul>
+<h3 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤"></a>步骤</h3><p>SIFT 的实现包括以下几个步骤</p>
 <ul>
 <li><p>构建高斯多尺度金字塔</p>
 </li>
@@ -1306,27 +1349,233 @@ $$ </p>
 </li>
 <li><p>选取特征点方向：前述是尺度不变，这里开始旋转不变</p>
 <ul>
-<li>首先计算每一个特征点邻域内像素的梯度方向和幅值，然后选择在特征点邻域内最突出的方向赋给这个特征点，以此作为该特征点的主方向<ul>
-<li>统计直方图统计邻域内像素的梯度和方向</li>
-<li>直方图中的最大值可认为是关键点的主方向</li>
-</ul>
+<li><p>首先计算每一个特征点邻域内像素的梯度方向和幅值，然后选择在特征点邻域内最突出的方向赋给这个特征点，以此作为该特征点的主方向</p>
+</li>
+<li><p>统计直方图统计邻域内像素的梯度和方向，直方图中的最大值可认为是关键点的主方向</p>
 </li>
 </ul>
 </li>
 <li><p>生成关键点描述子</p>
 <ul>
-<li>金字塔保证特征点的空间不变性， 严格删选保证了特征点的准确性， 方向信 息保证了特征点的旋转不变性</li>
-<li>每一个关键点都拥有三个信息：位置、尺度以及方向</li>
-</ul>
-<p>接下来需要为每个关键点建立一个描述符，用一组向量将这个关键点描述出来，使其不随各种变化而改变。描述子不但包括关键点，也包含关键点周围对其有贡献的像素点，并且描述符应该有较高的独特性，以便于提高特征点正确匹配的概率。</p>
-<ul>
-<li>将坐标轴旋转为关键点的方向，以确保旋转不变性</li>
-<li>选取一个大小为16×16的窗口，中心放在关键点上，这个16×16窗口中每一个又被分成4×4的小窗口，在每一个4×4的小窗口中分别计算其梯度幅值和方向</li>
-<li>邻域方向性信息联合的思想即增强了SIFT 算法的抗噪声能力，同时又对含有定位误差的特征匹配提供了很好 的容错性</li>
+<li><p>金字塔保证特征点的空间不变性， 严格删选保证了特征点的准确性， 方向信息保证了特征点的旋转不变性</p>
+</li>
+<li><p>每一个关键点都拥有三个信息：位置、尺度以及方向</p>
+</li>
+<li><p>接下来需要为每个关键点建立一个描述符，用一组向量将这个关键点描述出来，使其不随各种变化而改变。描述子不但包括关键点，也包含关键点周围对其有贡献的像素点，并且描述符应该有较高的独特性，以便于提高特征点正确匹配的概率。</p>
+</li>
+<li><p>将坐标轴旋转为关键点的方向，以确保旋转不变性</p>
+</li>
+<li><p>选取一个大小为16×16的窗口，中心放在关键点上，这个16×16窗口中每一个又被分成4×4的小窗口，在每一个4×4的小窗口中分别计算其梯度幅值和方向</p>
+</li>
 </ul>
 </li>
-<li><p>实时性不高。<br>有时特征点较少。<br>对边缘光滑的目标无法准确提取特征点。</p>
-<p>对模糊的图像和边缘平滑的图像，检测出的特征点过少，对圆更是无能为力。近来不断有人改进，其中最著名的有SURF和CSIFT。</p>
+</ul>
+<h1 id="纹理"><a href="#纹理" class="headerlink" title="纹理"></a>纹理</h1><h2 id="纹理相关任务"><a href="#纹理相关任务" class="headerlink" title="纹理相关任务"></a>纹理相关任务</h2><ul>
+<li>纹理中估计形状：从图像的纹理估计表面方向或形状</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/10/14/kWVBwyEbrfnMim9.png" alt="image-20221014221553201"></p>
+<ul>
+<li>利用纹理进行分割或分类：分析、表示纹理特征，将具有一致性的纹理分类</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/14/lPv8eaL6jZyRiAQ.png" alt="image-20221014222258193" style="zoom: 50%;" />
+
+<ul>
+<li>合成：生成新的纹理特征</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/14/R9bPBOFNzgclQ8W.png" alt="image-20221014222216909" style="zoom:50%;" />
+
+<h2 id="定义及表示"><a href="#定义及表示" class="headerlink" title="定义及表示"></a>定义及表示</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>纹理即重复出现的局部特征或模式</li>
+<li>通常表示了材料属性</li>
+<li>重要的外观线索，特别是形状相似时</li>
+</ul>
+<h3 id="表示"><a href="#表示" class="headerlink" title="表示"></a>表示</h3><p>既然纹理具有重复的模式，那么问题是：</p>
+<ul>
+<li><p>如何找到这种模式：</p>
+<ul>
+<li>使用和模式类似的滤波器（点状、条状、块状……）</li>
+<li>考虑滤波器的响应幅值</li>
+</ul>
+</li>
+<li><p>局部窗口中观察其统计特性：</p>
+<ul>
+<li>均值、标准差</li>
+<li>直方图</li>
+</ul>
+</li>
+</ul>
+<p>比如我们使用高斯偏导核对一张图卷积，并统计每个窗口中两个方向上导数的均值。</p>
+<img src="https://s2.loli.net/2022/10/14/JiQecFgSuaEOoPD.png" alt="image-20221014223723312" style="zoom:50%;" />
+
+<p>根据统计的结果绘图如下，由此可进行简单的分类：$x,y$ 方向上都方向变化比较小，说明是平坦区域；$x$ 方向变化大而 $y$ 方向变化小，说明主要是竖直方向的特征（图中竖直的沟渠）；两方向都变化较大，说明是图中的绿草区域。</p>
+<img src="https://s2.loli.net/2022/10/14/3GQ9L5RkXDmM1O7.png" alt="image-20221014224103009" style="zoom:60%;" />
+
+<p>为了表示各类特征之间的相似性，可使用 $L2$ 距离。</p>
+<p><img src="https://s2.loli.net/2022/10/14/LbaIc83qTnGQJp4.png" alt="image-20221014224856141"></p>
+<p>当前我们假设已知了选取窗口的大小，但实际中我们是不知道该取多大的窗口才能分类。为此，我们可以尝试多个窗宽大小，选择区域内特征变化稳定（即不再变化）时对应的窗口大小。</p>
+<p><img src="https://s2.loli.net/2022/10/14/26s5ztBZVgTNOJL.png" alt="image-20221014225345627"></p>
+<h3 id="滤波器组"><a href="#滤波器组" class="headerlink" title="滤波器组"></a>滤波器组</h3><p>前面我们使用 x y 方向的偏导核对图像卷积，得到了局部特征，于是我们就想，如果我们找一堆的滤波器，形成一个滤波器组（Filter Banks)，这个滤波器组尽可能的包含更多的特征，如此一来卷积后得到的特征是否会更多更全呢？</p>
+<p>以下图为例，该滤波器组包含了尺度、方向以及不同类型的模式</p>
+<p><em><a href="http://www.robots.ox.ac.uk/~vgg/research/texclass/filters.html" target="_blank" rel="noopener">Matlab code available for these examples</a></em></p>
+<img src="https://s2.loli.net/2022/10/15/JXtGgcZEqSfeP67.png" alt="image-20221015211405123" style="zoom:67%;" />
+
+<p>之前我们使用的高斯核都是一维或二维的，这里介绍一下多维高斯核，其形状如下图所示，$\Sigma$ 是协方差矩阵，不同的 $\Sigma$ 对应不同的高斯核。其中，45° 方向上的值不为 0 时表示 x y 方向上是相关的，即一方增大另一方亦增大。</p>
+<img src="https://s2.loli.net/2022/10/15/Aiz8OneMWVvDgaq.png" alt="image-20221015212136540" style="zoom:67%;" />
+
+<p>据此可以结合多维高斯核，从不同尺度、方向出发，构建滤波器组</p>
+<img src="https://s2.loli.net/2022/10/15/H2Dx4mbWNBSKA13.png" alt="image-20221015212547243" style="zoom:67%;" />
+
+<p>我们利用上述滤波器组对下图卷积：可以发现，随着卷积核的尺度越大，维度越高，所提取的特征也越发抽象。</p>
+<center>
+<figure>
+    <img src="https://s2.loli.net/2022/10/15/X5Y4rGmVf8aijwx.png" style="zoom:33%"/>
+    <img src="https://s2.loli.net/2022/10/15/cA4xJUZIKpb6msl.gif" style="zoom:42%"/>
+    </figure>
+</center> 
+
+<p>同样，由滤波器组的均值响应向量可以确定纹理（下图的七维响应向量 A B C 是卷积核对图像卷积后再对卷积结果取平均，且越亮表示图像中主要是该类特征）</p>
+<img src="https://s2.loli.net/2022/10/15/jIXGtUQHub3DRPf.png" alt="image-20221015215727563" style="zoom:67%;" />
+
+<p>上述过程采用了均值响应，但也可以采用直接对每个点都使用 7 维的向量。</p>
+<p>举例：假设原图为 $H\times W$，滤器组有 $n$ 维，一种方式是每个点都让滤波器组卷积，即每个点都对应 $n$ 维，则卷积后的响应为 $H\times W \times n$ ；另一种是采用统计结果，如取均值，则每张图像对应一个响应结果。</p>
+<p><strong>上述观点十分重要，因为卷积神经网络的基本思想就是如此，所不同的是，上述的滤波器组是人为设置的，而卷积神经网络的滤波器组则是网络自己学习的，我们可以想象的是，神经网络学习了超强的滤波器组，从而完成相应的任务。</strong></p>
+<p>上述过程可用于分类任务，比如利用滤波器组卷积后得到响应结果，与数据库中的结果进行比对（L2距离)，根据相似性便可完成分类。</p>
+<h1 id="图像分割"><a href="#图像分割" class="headerlink" title="图像分割"></a>图像分割</h1><h2 id="分割的目标"><a href="#分割的目标" class="headerlink" title="分割的目标"></a>分割的目标</h2><ul>
+<li><p>将相似的像素分为一组：是自底向上、无监督的过程，即不知道如何分，只根据像素的相似性分割</p>
+</li>
+<li><p>分割为“物体”，比如人和背景分开</p>
+</li>
+<li><p>诚然，终极目标是不断要分割出单个物体，还要从整体出发，理解某个个体组成的整体的内容。</p>
+</li>
+</ul>
+<p>比如下图，计算机可能只能分割出局部的特征，但对人类而言，还能观察到这些局部特征组成的整体特征。</p>
+<img src="https://s2.loli.net/2022/10/16/gUktdrChoLQelMH.png" alt="image-20221016204727007" style="zoom:50%;" />
+
+<p>更准确的说：</p>
+<ul>
+<li><p>语义分割：只分割出目标</p>
+</li>
+<li><p>实例分割：不仅分割出目标，还需指出一类目标中谁是谁</p>
+</li>
+</ul>
+<h2 id="K-Means-聚类分割"><a href="#K-Means-聚类分割" class="headerlink" title="K-Means 聚类分割"></a>K-Means 聚类分割</h2><ul>
+<li>相似像素聚类：K-Means 聚类，比如基于灰度或者颜色，以彩色分割结果为例，图中相同颜色表示同类，这便是<strong>语义分割</strong>；但这种分割没法知道图中的两个辣椒是不一样的，而要指出这两个辣椒是不同的，就是<strong>实例分割</strong>。</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/10/16/gTDG2kPiwKvoYhf.png" alt="image-20221016210153935"></p>
+<p>为了达到实例分割的目的，还需要额外的约束，观察不难发现，两个辣椒的位置明显不同，于是我们在 RGB 的基础上增加 位置坐标 X Y，便可初步进行分割。但问题是，如下图红圈所示，都是背景，但由于位置不同导致分成了不同的类。</p>
+<img src="https://s2.loli.net/2022/10/16/X3tFydZLNKGO86h.png" alt="image-20221016210838314" style="zoom: 67%;" />
+
+<ul>
+<li><p>K-Means 聚类分割优缺点</p>
+<ul>
+<li><p>简单、局部收敛</p>
+</li>
+<li><p>需要指定参数 K（即分为几类）</p>
+</li>
+<li><p>对初值、外点敏感</p>
+</li>
+<li><p>只适用于“球形”聚类</p>
+</li>
+</ul>
+</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/16/6JtIyS4cVXgdK9l.png" alt="image-20221016211500089" style="zoom:67%;" />
+
+<h2 id="Mean-Shift-聚类分割"><a href="#Mean-Shift-聚类分割" class="headerlink" title="Mean Shift 聚类分割"></a>Mean Shift 聚类分割</h2><p>均值漂移算法的思想是在特征空间中寻找密度的局部最大值</p>
+<p>主要过程是：随机选取一个 ROI，计算该 ROI 的重心，然后将该 ROI 向重心偏移，不断重复，最终找到密度的最大值</p>
+<img src="https://s2.loli.net/2022/10/16/FriubIXvqnB8gZh.gif" style="zoom: 33%;" />
+
+<p>不论从哪个方向出发，最终都会导向密度最大的地方</p>
+<p><img src="https://s2.loli.net/2022/10/16/CsBdXpuyhazO8wv.png" alt="image-20221016214908858"></p>
+<p>具体思路如下：</p>
+<ul>
+<li><p>给定特征，如颜色、梯度、纹理等</p>
+</li>
+<li><p>初始化特征点的窗口</p>
+</li>
+<li><p>进行均值漂移直至收敛</p>
+</li>
+<li><p>将具有相同峰值的（密度最大，三维角度看如下图）窗口合并为一类</p>
+</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/16/wmh4BMKRyJ9Dtjb.png" alt="image-20221016215635403" style="zoom:50%;" />
+
+<p>优缺点分析</p>
+<ul>
+<li><p>优点</p>
+<ul>
+<li><p>无需假设是球形聚类（不同于 K-Means)</p>
+</li>
+<li><p>只需指定一个参数：窗宽</p>
+</li>
+<li><p>可找到不同的多个类别</p>
+</li>
+<li><p>对外点鲁棒</p>
+</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>分割结果依赖于窗宽大小（太小容易局部收敛，导致过分割，太大则欠分割）</li>
+<li>计算量大（基本上每个像素都要计算，因为要计算重心）</li>
+<li>高维度下不适用</li>
+</ul>
+</li>
+</ul>
+<h2 id="图割法"><a href="#图割法" class="headerlink" title="图割法"></a>图割法</h2><h3 id="图割思想"><a href="#图割思想" class="headerlink" title="图割思想"></a>图割思想</h3><ul>
+<li>每个像素作为节点</li>
+<li>每对像素之间的连线作为边，边由两个节点的相似度的权值决定（也即边决定两个像素是否相似）</li>
+</ul>
+<img src="https://s2.loli.net/2022/10/16/o54ALN7KiJxuIrd.png" alt="image-20221016221846274" style="zoom:67%;" />
+
+<p>​    而分割的过程就是找到一种切割的方法切开图（断开边），要求断开的边的权重最小（也即最不相似的删掉）</p>
+<img src="https://s2.loli.net/2022/10/16/l2JBfH4rsbAYWpQ.png" alt="image-20221016222544876" style="zoom:50%;" />
+
+<p>既然图割依赖于相似性，那么该如何衡量相似性呢？</p>
+<p>假设每个像素可以用一个特征向量 $x$ 表示（可以是 rgb, x,y），再定义适合的距离函数（如 L2 距离）；然后可借助广义高斯核将两个特征向量之间的距离转为相似性度量：<br>$$<br>exp(-\frac{1}{2\sigma^2} \text{dist}(x_i,x_j)^2)<br>$$<br>这样，相似性就由 $\sigma$ 决定，其值越小，表明距离越近的点越相似（即距离我比较小的和我同类）；其值越大，表明即使距离很大，也有可能和我同类。下图中的右下三张图可看作是<strong>邻接矩阵</strong>的示意，邻接矩阵行和列的角点表示对应像素的相似性，不难发现，该矩阵是一个对称矩阵，因为像素 1-2 和像素 2-1 的相似度是一样的。</p>
+<img src="https://s2.loli.net/2022/10/16/o8ptPHjVUNka3cI.png" alt="image-20221016223934798" style="zoom:50%;" />
+
+<p>据此我们可知图割即：</p>
+<ul>
+<li><p>去除一些边，使得图断开连接</p>
+</li>
+<li><p>图割的代价：去除边的权重之和</p>
+</li>
+<li><p>通过图割可以完成分割</p>
+</li>
+</ul>
+<p>如何得到一个“好”的图割结果？</p>
+<h3 id="图割实现"><a href="#图割实现" class="headerlink" title="图割实现"></a>图割实现</h3><p>如之前所说，我们需要找到使得切掉边的所有的权重之和最小的情况，即最小割情形（这里涉及图论知识，菜鸡未深入接触）</p>
+<center>
+<figure>
+    <img src="https://s2.loli.net/2022/10/18/oKcUf8A1NCPTRea.png" style="zoom:34%"/>
+    <img src="https://s2.loli.net/2022/10/18/jNHrTzPFkgBiMnl.png" style="zoom:35%"/>
+    </figure>
+</center> 
+
+<p>但这种图割的方法存在的问题是：对于一些孤立的元素，容易形成很多独立的小区域，这是因为独立的点与其他的点连接边只有一个，自然权重最小</p>
+<img src="https://s2.loli.net/2022/10/18/6kuVM3lGBrxbIw7.png" alt="image-20221018213711452" style="zoom:67%;" />
+
+<p>为了避免上述情况，也即我们希望 AB 中的元素更多一点，而不仅仅是单个元素，因而在实际中我们使用的是归一化的图割，其代价函数为：<br>$$<br>\frac{\text{w}(A,B)}{\text{w}(A,V)} + \frac{\text{w}(A,B)}{\text{w}(B,V)}<br>$$<br>其中，$\text{w}(A,B)$ 是 $A$ 和 $B$ 之间所有边的权重之和，$\text{w}(A,V)$ 同理。</p>
+<p>可以这么理解上述公式：假设 A 只有一个元素，即上图的情况，此时上式中的 $\text{w}(A,V)$ 就会很小（即 A 与其他边连接的很少），故 $\frac{\text{w}(A,B)}{\text{w}(A,V)}$ 就会很大，这样整体的权重就大了，自然不会选择分割，就不会出现上图单元素分割的情况。</p>
+<p>上式经过一系列推导（<em>详见<a href="https://people.eecs.berkeley.edu/~malik/papers/SM-ncut.pdf" target="_blank" rel="noopener">J. Shi and J. Malik. Normalized cuts and image segmentation. PAMI 2000</a></em>），最终可得到下式：<br>$$<br>\frac{y^T(D-W)y}{y^TDy}<br>$$<br>式中：$W$ 是图的邻接矩阵，$D(i,i)=\Sigma_j(i,j)$，是一个对角矩阵，其元素是同一行元素的和。</p>
+<p>至此，问题转为求解使得上式最小时的 $y$ 向量，该向量是元素不是 0 和 1，元素属于这个类就是 1，否则就是 0,（即归一化的图割只区分为两类）。</p>
+<p>上式的求解采用的是<a href="https://zhuanlan.zhihu.com/p/296445326" target="_blank" rel="noopener">拉格朗日法</a>，转换为求解：$ (D − W)y = λDy$，该问题的解 $y$ 是次最小特征值对应的特征向量。</p>
+<p>求解出 $y$ 后，可能会发现该向量并不是 0 或 1，而是带有小数，为此可设置阈值，归一化为 0 和 1（类似二值化）。</p>
+<p>归一化的图割只能分为两类，如何实现多类分割呢？有两种方法：</p>
+<ul>
+<li><p>在现有分割的基础上迭代</p>
+</li>
+<li><p>现有分割的基础上使用 K-Means</p>
+</li>
+</ul>
+<p>值得注意的是，前述中对图像进行描述时使用了 rgb,x,y 的形式，但对于纹理特征难以用其描述时，可采用纹理一节中提到的滤波器组。</p>
+<h3 id="优缺点分析-1"><a href="#优缺点分析-1" class="headerlink" title="优缺点分析"></a>优缺点分析</h3><ul>
+<li><p>适用于众多不同的特征，比如选择不同的描述形式、不同的距离计算方式</p>
+</li>
+<li><p>计算耗时耗内存（所有像素参与）</p>
+</li>
+<li><p>倾向于均分为两类</p>
 </li>
 </ul>
 <h1 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h1><img src="https://s2.loli.net/2022/10/09/mjlLvfGA2aXcKTM.png" alt="image-20221009202858533" style="zoom:80%;" />
@@ -1426,10 +1675,10 @@ $$ <br>可见，如若估计得到 $L$，就可求得 $R$。</p>
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-10-10T22:58:05+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2022-10-18T22:47:44+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2022年10月10日</p>
+    <p>更新于：2022年10月18日</p>
   </a>
 </div>
 
@@ -1634,7 +1883,7 @@ window.MathJax = {
 
 
     <div class='content'>
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#图像去噪（滤波）"><span class="toc-number">1.</span> <span class="toc-text">图像去噪（滤波）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见噪声"><span class="toc-number">1.1.</span> <span class="toc-text">常见噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卷积"><span class="toc-number">1.2.</span> <span class="toc-text">卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯卷积"><span class="toc-number">1.3.</span> <span class="toc-text">高斯卷积</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯卷积的生成"><span class="toc-number">1.3.1.</span> <span class="toc-text">高斯卷积的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数的选取"><span class="toc-number">1.3.2.</span> <span class="toc-text">参数的选取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯核特性说明"><span class="toc-number">1.3.3.</span> <span class="toc-text">高斯核特性说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中值滤波"><span class="toc-number">1.4.</span> <span class="toc-text">中值滤波</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#卷积与边缘提取"><span class="toc-number">2.</span> <span class="toc-text">卷积与边缘提取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘"><span class="toc-number">2.1.</span> <span class="toc-text">边缘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘种类"><span class="toc-number">2.2.</span> <span class="toc-text">边缘种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测"><span class="toc-number">2.3.</span> <span class="toc-text">边缘检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像求导"><span class="toc-number">2.3.1.</span> <span class="toc-text">图像求导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像梯度"><span class="toc-number">2.3.2.</span> <span class="toc-text">图像梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际情况"><span class="toc-number">2.3.3.</span> <span class="toc-text">实际情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯一阶偏导核"><span class="toc-number">2.3.4.</span> <span class="toc-text">高斯一阶偏导核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canny-检测算子"><span class="toc-number">2.3.5.</span> <span class="toc-text">Canny 检测算子</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#拟合"><span class="toc-number">3.</span> <span class="toc-text">拟合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引例"><span class="toc-number">3.1.</span> <span class="toc-text">引例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最小二乘"><span class="toc-number">3.2.</span> <span class="toc-text">最小二乘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#“垂直”最小二乘"><span class="toc-number">3.2.1.</span> <span class="toc-text">“垂直”最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全最小二乘"><span class="toc-number">3.2.2.</span> <span class="toc-text">全最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#鲁棒估计（鲁棒核函数）"><span class="toc-number">3.2.3.</span> <span class="toc-text">鲁棒估计（鲁棒核函数）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RANSAC"><span class="toc-number">3.3.</span> <span class="toc-text">RANSAC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">3.3.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数选择"><span class="toc-number">3.3.2.</span> <span class="toc-text">参数选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#所需参数"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">所需参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自适应参数选取"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">自适应参数选取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优缺点分析"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">优缺点分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough-变换"><span class="toc-number">3.4.</span> <span class="toc-text">Hough 变换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#整体思想"><span class="toc-number">3.4.1.</span> <span class="toc-text">整体思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进方法"><span class="toc-number">3.4.2.</span> <span class="toc-text">改进方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声的影响"><span class="toc-number">3.4.3.</span> <span class="toc-text">噪声的影响</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hough-圆"><span class="toc-number">3.4.4.</span> <span class="toc-text">Hough 圆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广义-Hough"><span class="toc-number">3.4.5.</span> <span class="toc-text">广义 Hough</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点"><span class="toc-number">3.4.6.</span> <span class="toc-text">优缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特征检测"><span class="toc-number">4.</span> <span class="toc-text">特征检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#特征提取"><span class="toc-number">4.1.</span> <span class="toc-text">特征提取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Harris-角点"><span class="toc-number">4.2.</span> <span class="toc-text">Harris 角点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-number">4.2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤"><span class="toc-number">4.2.2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不变性分析"><span class="toc-number">4.2.3.</span> <span class="toc-text">不变性分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斑点（Blob）检测"><span class="toc-number">4.3.</span> <span class="toc-text">斑点（Blob）检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拉普拉斯核"><span class="toc-number">4.3.1.</span> <span class="toc-text">拉普拉斯核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度选择"><span class="toc-number">4.3.2.</span> <span class="toc-text">尺度选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度空间"><span class="toc-number">4.3.3.</span> <span class="toc-text">尺度空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIFT"><span class="toc-number">4.3.4.</span> <span class="toc-text">SIFT</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#图像增强"><span class="toc-number">5.</span> <span class="toc-text">图像增强</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#低照度图像增强算法-Retinex"><span class="toc-number">5.1.</span> <span class="toc-text">低照度图像增强算法-Retinex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#直方图均衡化"><span class="toc-number">5.2.</span> <span class="toc-text">直方图均衡化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#颜色空间"><span class="toc-number">6.</span> <span class="toc-text">颜色空间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HSV"><span class="toc-number">6.1.</span> <span class="toc-text">HSV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YUV"><span class="toc-number">6.2.</span> <span class="toc-text">YUV</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#空间滤波"><span class="toc-number">7.</span> <span class="toc-text">空间滤波</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-number">7.1.</span> <span class="toc-text">空间相关与卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间滤波器的构建"><span class="toc-number">7.2.</span> <span class="toc-text">空间滤波器的构建</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#图像去噪（滤波）"><span class="toc-number">1.</span> <span class="toc-text">图像去噪（滤波）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#常见噪声"><span class="toc-number">1.1.</span> <span class="toc-text">常见噪声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#卷积"><span class="toc-number">1.2.</span> <span class="toc-text">卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高斯卷积"><span class="toc-number">1.3.</span> <span class="toc-text">高斯卷积</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯卷积的生成"><span class="toc-number">1.3.1.</span> <span class="toc-text">高斯卷积的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数的选取"><span class="toc-number">1.3.2.</span> <span class="toc-text">参数的选取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯核特性说明"><span class="toc-number">1.3.3.</span> <span class="toc-text">高斯核特性说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#中值滤波"><span class="toc-number">1.4.</span> <span class="toc-text">中值滤波</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#卷积与边缘提取"><span class="toc-number">2.</span> <span class="toc-text">卷积与边缘提取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘"><span class="toc-number">2.1.</span> <span class="toc-text">边缘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘种类"><span class="toc-number">2.2.</span> <span class="toc-text">边缘种类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#边缘检测"><span class="toc-number">2.3.</span> <span class="toc-text">边缘检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图像求导"><span class="toc-number">2.3.1.</span> <span class="toc-text">图像求导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图像梯度"><span class="toc-number">2.3.2.</span> <span class="toc-text">图像梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际情况"><span class="toc-number">2.3.3.</span> <span class="toc-text">实际情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#高斯一阶偏导核"><span class="toc-number">2.3.4.</span> <span class="toc-text">高斯一阶偏导核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Canny-检测算子"><span class="toc-number">2.3.5.</span> <span class="toc-text">Canny 检测算子</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#拟合"><span class="toc-number">3.</span> <span class="toc-text">拟合</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引例"><span class="toc-number">3.1.</span> <span class="toc-text">引例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最小二乘"><span class="toc-number">3.2.</span> <span class="toc-text">最小二乘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#“垂直”最小二乘"><span class="toc-number">3.2.1.</span> <span class="toc-text">“垂直”最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#全最小二乘"><span class="toc-number">3.2.2.</span> <span class="toc-text">全最小二乘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#鲁棒估计（鲁棒核函数）"><span class="toc-number">3.2.3.</span> <span class="toc-text">鲁棒估计（鲁棒核函数）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RANSAC"><span class="toc-number">3.3.</span> <span class="toc-text">RANSAC</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思想"><span class="toc-number">3.3.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数选择"><span class="toc-number">3.3.2.</span> <span class="toc-text">参数选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#所需参数"><span class="toc-number">3.3.2.1.</span> <span class="toc-text">所需参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自适应参数选取"><span class="toc-number">3.3.2.2.</span> <span class="toc-text">自适应参数选取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优缺点分析"><span class="toc-number">3.3.2.3.</span> <span class="toc-text">优缺点分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hough-变换"><span class="toc-number">3.4.</span> <span class="toc-text">Hough 变换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#整体思想"><span class="toc-number">3.4.1.</span> <span class="toc-text">整体思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改进方法"><span class="toc-number">3.4.2.</span> <span class="toc-text">改进方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声的影响"><span class="toc-number">3.4.3.</span> <span class="toc-text">噪声的影响</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hough-圆"><span class="toc-number">3.4.4.</span> <span class="toc-text">Hough 圆</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广义-Hough"><span class="toc-number">3.4.5.</span> <span class="toc-text">广义 Hough</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点"><span class="toc-number">3.4.6.</span> <span class="toc-text">优缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#特征检测"><span class="toc-number">4.</span> <span class="toc-text">特征检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#特征提取"><span class="toc-number">4.1.</span> <span class="toc-text">特征提取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Harris-角点"><span class="toc-number">4.2.</span> <span class="toc-text">Harris 角点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理"><span class="toc-number">4.2.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤"><span class="toc-number">4.2.2.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不变性分析"><span class="toc-number">4.2.3.</span> <span class="toc-text">不变性分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#斑点（Blob）检测"><span class="toc-number">4.3.</span> <span class="toc-text">斑点（Blob）检测</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#拉普拉斯核"><span class="toc-number">4.3.1.</span> <span class="toc-text">拉普拉斯核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度选择"><span class="toc-number">4.3.2.</span> <span class="toc-text">尺度选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尺度空间"><span class="toc-number">4.3.3.</span> <span class="toc-text">尺度空间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SIFT"><span class="toc-number">4.4.</span> <span class="toc-text">SIFT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#原理-1"><span class="toc-number">4.4.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不变性分析-1"><span class="toc-number">4.4.2.</span> <span class="toc-text">不变性分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SIFT-特征描述子"><span class="toc-number">4.4.3.</span> <span class="toc-text">SIFT 特征描述子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤-1"><span class="toc-number">4.4.4.</span> <span class="toc-text">步骤</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#纹理"><span class="toc-number">5.</span> <span class="toc-text">纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#纹理相关任务"><span class="toc-number">5.1.</span> <span class="toc-text">纹理相关任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定义及表示"><span class="toc-number">5.2.</span> <span class="toc-text">定义及表示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-number">5.2.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#表示"><span class="toc-number">5.2.2.</span> <span class="toc-text">表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#滤波器组"><span class="toc-number">5.2.3.</span> <span class="toc-text">滤波器组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#图像分割"><span class="toc-number">6.</span> <span class="toc-text">图像分割</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#分割的目标"><span class="toc-number">6.1.</span> <span class="toc-text">分割的目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#K-Means-聚类分割"><span class="toc-number">6.2.</span> <span class="toc-text">K-Means 聚类分割</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mean-Shift-聚类分割"><span class="toc-number">6.3.</span> <span class="toc-text">Mean Shift 聚类分割</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图割法"><span class="toc-number">6.4.</span> <span class="toc-text">图割法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#图割思想"><span class="toc-number">6.4.1.</span> <span class="toc-text">图割思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图割实现"><span class="toc-number">6.4.2.</span> <span class="toc-text">图割实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优缺点分析-1"><span class="toc-number">6.4.3.</span> <span class="toc-text">优缺点分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#图像增强"><span class="toc-number">7.</span> <span class="toc-text">图像增强</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#低照度图像增强算法-Retinex"><span class="toc-number">7.1.</span> <span class="toc-text">低照度图像增强算法-Retinex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#直方图均衡化"><span class="toc-number">7.2.</span> <span class="toc-text">直方图均衡化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#颜色空间"><span class="toc-number">8.</span> <span class="toc-text">颜色空间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HSV"><span class="toc-number">8.1.</span> <span class="toc-text">HSV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#YUV"><span class="toc-number">8.2.</span> <span class="toc-text">YUV</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#空间滤波"><span class="toc-number">9.</span> <span class="toc-text">空间滤波</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#空间相关与卷积"><span class="toc-number">9.1.</span> <span class="toc-text">空间相关与卷积</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空间滤波器的构建"><span class="toc-number">9.2.</span> <span class="toc-text">空间滤波器的构建</span></a></li></ol></li></ol>
     </div>
   </section>
 
@@ -1907,5 +2156,6 @@ setInterval("createtime()",250);
 <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
 <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
 <script type="text/javascript" src="/js/fireworks.js"></script>
+
 
 
