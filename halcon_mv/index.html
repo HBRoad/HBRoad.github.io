@@ -1,0 +1,1229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>机器视觉—Halcon | 南阳向北</title><meta name="keywords" content="Halcon"><meta name="author" content="MQRoad"><meta name="copyright" content="MQRoad"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="机器视觉—Halcon"><meta name="application-name" content="机器视觉—Halcon"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="bookmark" href="/img/siteicon/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" sizes="180x180" href="/img/siteicon/apple-touch-icon.png"><link rel="apple-touch-icon" sizes="192x192" href="/img/siteicon/apple-touch-icon.png"><link rel="apple-touch-icon" sizes="512x512" href="/img/siteicon/apple-touch-icon.png"><link rel="apple-touch-startup-image" media="screen and (device-width:320px) and (device-height:568px) and (-webkit-device-pixel-ratio:2) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_1136x640.png"><link rel="apple-touch-startup-image" media="screen and (device-width:320px) and (device-height:568px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)" href="/img/siteicon/splashIcons/icon_640x1136.png"><link rel="apple-touch-startup-image" media="screen and (device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:3) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_2688x1242.png"><link rel="apple-touch-startup-image" media="screen and (device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_1792x828.png"><link rel="apple-touch-startup-image" media="screen and (device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)" href="/img/siteicon/splashIcons/icon_1125x2436.png"><link rel="apple-touch-startup-image" media="screen and (device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)" href="/img/siteicon/splashIcons/icon_828x1792.png"><link rel="apple-touch-startup-image" media="screen and (device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_2436x1125.png"><link rel="apple-touch-startup-image" media="screen and (device-width:414px) and (device-height:736px) and (-webkit-device-pixel-ratio:3) and (orientation:portrait)" href="/img/siteicon/splashIcons/icon_1242x2208.png"><link rel="apple-touch-startup-image" media="screen and (device-width:414px) and (device-height:736px) and (-webkit-device-pixel-ratio:3) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_2208x1242.png"><link rel="apple-touch-startup-image" media="screen and (device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_1334x750.png"><link rel="apple-touch-startup-image" media="screen and (device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2) and (orientation:portrait)" href="/img/siteicon/splashIcons/icon_750x1334.png"><link rel="apple-touch-startup-image" media="screen and (device-width:1024px) and (device-height:1366px) and (-webkit-device-pixel-ratio:2) and (orientation:landscape)" href="/img/siteicon/splashIcons/icon_2732x2048.png"><meta name="description" content="参考课程：河南理工大学-苏波-机器视觉 ROI获取 可直接通过交互程序进行创建 通过程序创建  123read_image(Image, &amp;#x27;printer_chip&#x2F;printer_chip_01&amp;#x27;)gen_rectangle1(Rectangle, 30, 20, 100, 200) * 绘制一个矩形reduce_domain(Image, Rectangle, ImageR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器视觉—Halcon">
+<meta property="og:url" content="https://hbroad.github.io/halcon_mv/index.html">
+<meta property="og:site_name" content="南阳向北">
+<meta property="og:description" content="参考课程：河南理工大学-苏波-机器视觉 ROI获取 可直接通过交互程序进行创建 通过程序创建  123read_image(Image, &amp;#x27;printer_chip&#x2F;printer_chip_01&amp;#x27;)gen_rectangle1(Rectangle, 30, 20, 100, 200) * 绘制一个矩形reduce_domain(Image, Rectangle, ImageR">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png">
+<meta property="article:published_time" content="2023-05-15T13:03:05.000Z">
+<meta property="article:modified_time" content="2023-05-26T02:40:29.445Z">
+<meta property="article:author" content="MQRoad">
+<meta property="article:tag" content="Halcon">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://hbroad.github.io/halcon_mv/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://npm.elemecdn.com/@fortawesome/fontawesome-free@6.3.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/@fancyapps/ui@4.0.31/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#3b70fc","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://npm.elemecdn.com/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器视觉—Halcon',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-05-26 10:40:29'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              // const now = new Date()
+              // const hour = now.getHours()
+              // const isNight = hour <= 6 || hour >= 18
+              // isNight ? activateDarkMode() : activateLightMode()
+              activateDarkMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<style>#recent-posts{margin-top:-1rem;align-content:flex-start;display:flex;flex-wrap:wrap;justify-content:space-between}#recent-posts>.recent-post-item{margin-top:1rem;display:inline-block;height:auto;width:49%}#recent-posts>.recent-post-item .post_cover{width:100%;height:200px}#recent-posts>.recent-post-item .post_cover img.post_bg{width:100%;height:100%}#recent-posts>.recent-post-item>.recent-post-info>.content{display:none}#recent-posts>.recent-post-item{-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}#recent-posts>.recent-post-item .left_radius{border-radius:8px 8px 0 0}#recent-posts>.recent-post-item .right_radius{border-radius:8px 8px 0 0}.recent-post-item{height:auto!important}.recent-post-info{padding:0 40px;margin-top:1em;width:100%!important}#recent-posts>.recent-post-item>.recent-post-info>.article-title{-webkit-line-clamp:1;margin-top:.3rem;margin-bottom:.3rem;color:var(--text-highlight-color);font-size:1.2em;line-height:1.4}#recent-posts>.recent-post-item>.recent-post-info>.article-meta-wrap{margin-bottom:1rem}@media screen and (max-width:768px){#recent-posts>.recent-post-item{width:100%}}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/"><div class="title">南阳向北</div><i class="fa-solid fa-house"></i></a></span><div class="mask-name-container"><center id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></center></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="fa-fw fas fa-archive faa-tada"></i><span> 全部</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="fa-fw fas fa-shapes faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="fa-fw fas fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><span> AI资讯</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/about/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zhifeiji"></use></svg><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="fa-fw fas fas fa-lightbulb faa-tada"></i><span> 发个说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/timeline/"><i class="fa-fw fa-fw fas fa-shoe-prints faa-tada faa-tada"></i><span> 建站小记</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="fas fa-dice" style="font-size:1.2rem"></i></a></div><div class="nav-button" id="darkmode_navswitch"><a class="darkmode_switchbutton" type="button" href="javascript:void(0);" title="浅色和深色模式转换" onclick="rm.switchDarkMode()"><i class="fas fa-adjust"></i></a></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="fas fa-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">机器视觉—Halcon</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-05-15T13:03:05.000Z" title="发表于 2023-05-15 21:03:05">2023-05-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-05-26T02:40:29.445Z" title="更新于 2023-05-26 10:40:29">2023-05-26</time></span></div><div class="meta-secondline"></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png"></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PU4y177AT">参考课程：河南理工大学-苏波-机器视觉</a></p>
+<h2 id="ROI获取"><a href="#ROI获取" class="headerlink" title="ROI获取"></a>ROI获取</h2><ul>
+<li>可直接通过交互程序进行创建</li>
+<li>通过程序创建</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">read_image(Image, &#x27;printer_chip/printer_chip_01&#x27;)</span><br><span class="line">gen_rectangle1(Rectangle, 30, 20, 100, 200) * 绘制一个矩形</span><br><span class="line">reduce_domain(Image, Rectangle, ImageReduced)   * 抠出给定矩形位置和大小的部分</span><br></pre></td></tr></table></figure>
+<p>也可通过交互式窗口，由用户决定绘制的位置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">read_image(Image, &#x27;printer_chip/printer_chip_01&#x27;)</span><br><span class="line">get_image_size(Image, Width, Height)</span><br><span class="line">dev_open_window(0, 0, Width, Height, &#x27;black&#x27;, WindowHandle)</span><br><span class="line">dev_display(Image)</span><br><span class="line">draw_rectangle1(WindowHandle, Row1, Column1, Row2, Column2)</span><br><span class="line">gen_rectangle1(Rectangle, Row1, Column1, Row2, Column2)</span><br><span class="line">reduce_domain(Image, Rectangle, ImageReduced)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>dev_display() 显示图片时无需指定窗口句柄，但其保持就近原则，若同时打开了多个窗口，可通过 dev_set_window() 指定要显示窗口的句柄</p>
+</li>
+<li><p>reduce_domain() 计算原图与ROI的交集，但输出结果并未改变 ROI 的大小，即输出图像的大小和原图大小一致</p>
+</li>
+</ul>
+<h2 id="图像的变换与校正"><a href="#图像的变换与校正" class="headerlink" title="图像的变换与校正"></a>图像的变换与校正</h2><h3 id="几何变换理论"><a href="#几何变换理论" class="headerlink" title="几何变换理论"></a>几何变换理论</h3><ul>
+<li><p>基本变换：平移、旋转、缩放</p>
+</li>
+<li><p>几种变换的直观解释</p>
+</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/16/HruEvJkSeONTIlQ.png" alt="变换.png" style="zoom: 50%;" /></p>
+<h4 id="相似变换"><a href="#相似变换" class="headerlink" title="相似变换"></a>相似变换</h4><ul>
+<li>变换过程中形状不变，大小、方向、位置可变</li>
+<li>可分解为 等比例缩放、平移、旋转 的组合</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{bmatrix} x’ \\y' \\ 1 \end{bmatrix} = \begin{bmatrix} sR & t \\ 0 & 1\end{bmatrix} \begin{bmatrix} x \\ y \\ 1\\\end{bmatrix}</script><h4 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h4><ul>
+<li>变换过程中保持直线和平行线不变</li>
+<li>可分解为 缩放、平移、旋转、切变 组合</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{bmatrix} x’ \\y' \\ 1 \end{bmatrix} = \begin{bmatrix} a & b & c \\ d & e & f \\ 0 & 0& 1\end{bmatrix} \begin{bmatrix} x \\ y \\ 1\\\end{bmatrix}</script><h4 id="投影变换"><a href="#投影变换" class="headerlink" title="投影变换"></a>投影变换</h4><ul>
+<li>直线映射为直线，但不一定保证平行度</li>
+<li>仿射变换是投影变换的特例</li>
+<li>又叫单应性变换：是同一物体在不同视角，在像素坐标系下的变换</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{bmatrix} x’ \\y' \\ 1 \end{bmatrix} = \begin{bmatrix} A_{2\times2} & T_{2\times1}\\ V^T & s \end{bmatrix} \begin{bmatrix} x \\ y \\ 1\\\end{bmatrix}</script><p>式中，$A<em>{2\times2}$ 表示仿射变换，$T</em>{2\times1}$ 表示平移变换。</p>
+<p>此外，$V^T=[v_1, v_2]$ 表示一种“变换后的边缘交点”关系， 如一个方形像素经过 $V^T=[v_1, v_2]$  变换后不再是方形：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/17/uPHnKxAv9R5ZENJ.png" alt="投影变换.png" style="zoom:50%;" /></p>
+<p>$s$ 是一个与 $V^T$ 相关的缩放因子，其具体表达为：</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0\\ v_1 & v_2 & s \end{bmatrix} \begin{bmatrix} x \\ y \\ 1\\\end{bmatrix} = \begin{bmatrix} x \\y \\ v_1x+v_2y+s \end{bmatrix} \Longleftrightarrow \begin{bmatrix} \frac{x}{v_1x+v_2y+s} \\ \frac{y}{v_1x+v_2y+s} \\  \end{bmatrix}</script><p>单应性变换矩阵虽然有 9 个参数，但其实际自由度是 8。</p>
+<p>由于一对同名点仅能确定两个方程，故 8 个未知数至少需要 4 组同名点，该矩阵的具体求解过程见<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PU4y177AT?t=2401.7&amp;p=15">课程</a>。</p>
+<h3 id="Halcon-算子"><a href="#Halcon-算子" class="headerlink" title="Halcon 算子"></a>Halcon 算子</h3><p>以下算子以 2D 为例，3D 只是齐次矩阵为 4*4，其他同理。</p>
+<h4 id="平移算子"><a href="#平移算子" class="headerlink" title="平移算子"></a>平移算子</h4><p>对一个 2D 齐次变换矩阵 HomMat2D 进行平移，返回平移后的结果 HomMat2DTranslate</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hom_mat2d_translate( : : HomMat2D, Tx, Ty : HomMat2DTranslate)</span><br></pre></td></tr></table></figure>
+<p>该函数的具体作用机理是，在一个单位变换矩阵中添加平移项（平移向量 $t = (T_x, T_y)$），可用公式表达为：</p>
+<script type="math/tex; mode=display">
+\text{HomMat2DTranslate} = \begin{bmatrix}1 & 0 & T_x \\ 0 & 1 & T_y \\ 0 & 0 & 1\end{bmatrix} \text{HomMat2D}</script><p>该函数是相对于世界坐标系（静态坐标系）的变换，若要相对于局部坐标系（动态坐标系）做变换，可使用 hom_mat2d_translate_local。</p>
+<p><strong>在 Halcon 中，齐次矩阵通过元祖按行存储，通常最后一行是不进行存储的（因为其是单位阵），如上述平移变换的矩阵实际存储为 $[1, 0, T_x, 0, 1, T_y]$。</strong></p>
+<h4 id="旋转算子"><a href="#旋转算子" class="headerlink" title="旋转算子"></a>旋转算子</h4><p>对一个 2D 齐次变换矩阵 HomMat2D 进行旋转，返回旋转后的结果 HomMat2DRotate</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hom_mat2d_rotate( : : HomMat2D, Phi, Px, Py : HomMat2DRotate)</span><br></pre></td></tr></table></figure>
+<p>该函数具体原理同前，旋转角度为 $\phi$：</p>
+<script type="math/tex; mode=display">
+\text{HomMat2DRotate} = \begin{bmatrix}cos\phi & -sin\phi & 0 \\ sin\phi & cos\phi & 0 \\ 0 & 0 & 1\end{bmatrix} \text{HomMat2D}</script><p>该函数中的另外两个参数是一个定点，点 $(P_x, P_y)$ 在使用该函数变换时保持不变， 可以理解为绕哪个定点进行旋转，其具体原理是：先利用一个变换矩阵将该定点平移至世界坐标系原点，接着执行旋转过程，最后再将该定点移动至其原来的位置。（说白了就是不管你指定绕哪个点旋转，这个函数都会先移动到坐标系原点执行旋转，最后再回到指定的点），该过程可用变换链表示为：</p>
+<script type="math/tex; mode=display">
+\text{HomMat2DRotate} = \begin{bmatrix}1 & 0 & +P_x \\ 0 & 1 & +P_y \\ 0 & 0 & 1\end{bmatrix} \begin{bmatrix}cos\phi & -sin\phi & 0 \\ sin\phi & cos\phi & 0 \\ 0 & 0 & 1\end{bmatrix}  \begin{bmatrix}1 & 0 & -P_x \\ 0 & 1 & -P_y \\ 0 & 0 & 1\end{bmatrix}\text{HomMat2D}</script><h4 id="缩放算子"><a href="#缩放算子" class="headerlink" title="缩放算子"></a>缩放算子</h4><p>对一个 2D 齐次变换矩阵 HomMat2D 进行缩放，返回缩放后的结果 HomMat2DScale</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hom_mat2d_scale( : : HomMat2D, Sx, Sy, Px, Py : HomMat2DScale)</span><br></pre></td></tr></table></figure>
+<p>该函数具体原理同前，在两方向上的缩放量为 $S_x$、$S_y$：</p>
+<script type="math/tex; mode=display">
+\text{HomMat2DScale} = \begin{bmatrix}S_x & 0 & 0 \\ 0 & S_y & 0 \\ 0 & 0 & 1\end{bmatrix} \text{HomMat2D}</script><p>定点 $(P_x, P_y)$ 含义同前。</p>
+<h4 id="仿射变换-1"><a href="#仿射变换-1" class="headerlink" title="仿射变换"></a>仿射变换</h4><p>对图像进行任意 2D 仿射变换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">affine_trans_image(Image : ImageAffineTrans : HomMat2D, Interpolation, AdaptImageSize : )</span><br></pre></td></tr></table></figure>
+<p>由于仿射变换是上述各类变换的组合，故仿射变换矩阵 HomMat2D 可通过上述变换组合得到。</p>
+<p>此外，由于转换后的点落在像素坐标之间，可能不再是整数，因而需要选择合适的插值方式，将其转为整数输出，同时也可避免缩放图像导致的混叠现象（可理解为抗锯齿）。具体的插值方式有：</p>
+<ul>
+<li><p>最近邻插值（nearest_neighbor）：由最近邻像素决定，质量低但快速</p>
+</li>
+<li><p>双线性插值（bilinear）：利用最邻近四个像素的双线性插值，质量和速度中等（若仿射变换包含缩放，且缩放因子 &lt;1，不会进行平滑滤波，可能会导致验证的锯齿现象）</p>
+</li>
+<li><p>双三次插值（bicubic）：4*4 邻域的双三次插值，放大质量高但慢（若仿射变换包含缩放，且缩放因子 &lt;1，不会进行平滑滤波，可能会导致验证的锯齿现象）</p>
+</li>
+<li><p>常数（constant）：双线性插值，质量和速度中等（缩放因子小于 1 时，采用均值滤波防止混叠现象）</p>
+</li>
+<li><p>加权：双线性插值，质量高但慢（采用高斯滤波）</p>
+</li>
+</ul>
+<p>插值的方式决定了输出图像和原始图像差别的大小，<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PU4y177AT?t=328.7&amp;p=16">插值具体解释</a></p>
+<h4 id="投影变换-1"><a href="#投影变换-1" class="headerlink" title="投影变换"></a>投影变换</h4><p>使用给定的同名点对计算出齐次变换矩阵（可理解为多视几何中不同视角的同名点，左视角同名点*单应性矩阵 = 右视角下对应的同名点）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hom_vector_to_proj_hom_mat2d( : : Px, Py, Pw, Qx, Qy, Qw, Method : HomMat2D)</span><br></pre></td></tr></table></figure>
+<p>若恰好给定了4 对同名点，则只用其求解；若多于 4 组，则该函数旨在最小化变换的误差，此时还需指定优化的方法，可选项为：normalized_dlt 和 dlt，前者通常更加，为函数默认值。但若给定坐标中的 $Q_w$ 或 $P_w$ 为 0，则必须选择 dlt。</p>
+<script type="math/tex; mode=display">
+\begin{bmatrix} Q_x \\Q_y \\ Q_w\end{bmatrix} = \text{HomMat2D} \begin{bmatrix} P_x \\P_y \\ P_w\end{bmatrix}</script><h2 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h2><h3 id="点运算"><a href="#点运算" class="headerlink" title="点运算"></a>点运算</h3><ul>
+<li>线性变换</li>
+<li>分段线性变换</li>
+</ul>
+<h3 id="图像增强算子"><a href="#图像增强算子" class="headerlink" title="图像增强算子"></a>图像增强算子</h3><h4 id="图像取反"><a href="#图像取反" class="headerlink" title="图像取反"></a>图像取反</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invert_image(Image : ImageInvert : : )</span><br></pre></td></tr></table></figure>
+<p>具体做法是：</p>
+<script type="math/tex; mode=display">
+g' = 255 - g</script><h4 id="增加图像对比度"><a href="#增加图像对比度" class="headerlink" title="增加图像对比度"></a>增加图像对比度</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emphasize(Image : ImageEmphasize : MaskWidth, MaskHeight, Factor : )</span><br></pre></td></tr></table></figure>
+<p>增强图像中高频的部分（如边和角），图像类似锐化的效果。其过程是：先进行低通滤波，再与原图像进行如下计算：</p>
+<script type="math/tex; mode=display">
+\text{res} = \text{round}((\text{orig} - \text{mean}) * \text{Factor}) + \text{orig}</script><p>因子 Factor 是对比度增强的度量，分频由滤波矩阵的大小决定，越大分频越低。</p>
+<h4 id="缩放图像灰度"><a href="#缩放图像灰度" class="headerlink" title="缩放图像灰度"></a>缩放图像灰度</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scale_image(Image : ImageScaled : Mult, Add : )</span><br></pre></td></tr></table></figure>
+<p>该算子对输入的图像进行如下变换：</p>
+<script type="math/tex; mode=display">
+g' = g * \text{Mult} + \text{Add}</script><p>该算子可用于将图像的灰度值，如位于区间 $[\text{Gmin},\text{GMax}]$，映射或扩展到最大区间 $[0,255]$，此时，参数的选取规则为：</p>
+<script type="math/tex; mode=display">
+\text{Mult} = \frac{255}{\text{GMax}-\text{GMin}}\\
+\text{Add} = -\text{Mult} * GMin</script><p>值得一提的是，该函数中的两个数取值若为：$\text{Mult} = -1$，$\text{Add} = 255$，则等价于取反操作。</p>
+<h4 id="直方图修正"><a href="#直方图修正" class="headerlink" title="直方图修正"></a>直方图修正</h4><ul>
+<li>直方图均衡化</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">equ_histo_image(Image : ImageEquHisto : : )</span><br></pre></td></tr></table></figure>
+<ul>
+<li>直方图规定化</li>
+</ul>
+<p>​       将原图像的直方图变成规定形状的直方图，可见直方图均衡化只是直方图规定化的一个特例。</p>
+<h3 id="图像平滑算子"><a href="#图像平滑算子" class="headerlink" title="图像平滑算子"></a>图像平滑算子</h3><ul>
+<li>高斯噪声</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gauss_distribution( : : Sigma : Distribution)	* 产生高斯分布噪声</span><br><span class="line">add_noise_distribution(Image : ImageNoise : Distribution : ) 	* 为图像添加高斯噪声</span><br></pre></td></tr></table></figure>
+<ul>
+<li>椒盐噪声</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sp_distribution( : : PercentSalt, PercentPepper : Distribution)	* 产生椒盐噪声</span><br></pre></td></tr></table></figure>
+<ul>
+<li>滤波算子</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mean_image(Image : ImageMean : MaskWidth, MaskHeight : )	* 均值滤波</span><br></pre></td></tr></table></figure>
+<ul>
+<li>图像锐化(边缘检测)</li>
+</ul>
+<p>可用于增强边缘和轮廓</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sobel_amp(Image : EdgeAmplitude : FilterType, Size : )</span><br><span class="line">laplace(Image : ImageLaplace : ResultType, MaskSize, FilterMask : )</span><br></pre></td></tr></table></figure>
+<h3 id="频域处理"><a href="#频域处理" class="headerlink" title="频域处理"></a>频域处理</h3><ul>
+<li><p>低频：灰度均匀的部分</p>
+</li>
+<li><p>高频：噪声、边缘、细节</p>
+</li>
+<li><p>具体步骤：</p>
+<ul>
+<li><p>快速傅里叶变换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fft_generic(Image : ImageFFT : Direction, Exponent, Norm, Mode, ResultType : )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成理想的低/高通滤波模型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gen_lowpass( : ImageLowpass : Frequency, Norm, Mode, Width, Height : )</span><br><span class="line">gen_highpass( : ImageLowpass : Frequency, Norm, Mode, Width, Height : )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在频域卷积图像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convol_fft(ImageFFT, ImageFilter : ImageConvol : : )</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进行快速傅里叶反变换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fft_generic(Image : ImageFFT : Direction, Exponent, Norm, Mode, ResultType : )</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="同态滤波增强"><a href="#同态滤波增强" class="headerlink" title="同态滤波增强"></a>同态滤波增强</h3><ul>
+<li><p>把图像的照明反射模型作为频域处理的基础，将<span class='p red'>亮度范围压缩</span>和<span class='p red'>对比度增强</span>的频域处理方法。</p>
+</li>
+<li><p>可改善图像的照度不均</p>
+</li>
+</ul>
+<h2 id="图像分割"><a href="#图像分割" class="headerlink" title="图像分割"></a>图像分割</h2><h3 id="阈值分割"><a href="#阈值分割" class="headerlink" title="阈值分割"></a>阈值分割</h3><p> 按图像像素灰度幅度进行分割的方法，把图像的灰度分成不同的等级，然后设置阈值确定有意义的区域或要分割物体的边界，该操作被定义为：</p>
+<script type="math/tex; mode=display">
+S = \{(r,c) \in R |g_{\text{min}} \le f_{r,c} \le g_{\text{max}} \}</script><p>可见，阈值分割是将图像内灰度值处于某一指定灰度范围内全部点输出到区域 S 中。若光照能保持恒定，则阈值能在系统设置时被选定且不再被调整。</p>
+<p>Halcon 算子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">threshold(Image : Region : MinGray, MaxGray : )</span><br></pre></td></tr></table></figure>
+<p>阈值选择的方法：</p>
+<ul>
+<li>根据直方图谷底确定</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">histo_to_thresh( : : Histogramm, Sigma : MinThresh, MaxThresh)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PU4y177AT?t=113.7&amp;p=22">目前看到复习与阈值分割</a></p>
+<h3 id="相机标定——Halcon"><a href="#相机标定——Halcon" class="headerlink" title="相机标定——Halcon"></a>相机标定——Halcon</h3><h4 id="标定原理"><a href="#标定原理" class="headerlink" title="标定原理"></a>标定原理</h4><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PU4y177AT?t=1777.0&amp;p=54">具体原理</a></p>
+<h4 id="标定流程"><a href="#标定流程" class="headerlink" title="标定流程"></a>标定流程</h4><ul>
+<li><p>根据相机类型（面阵、线阵）创建相机参数（低精度除法（Division）模式、高精度多项式（Polynomia）模式</p>
+</li>
+<li><p>使用<code>create_calib_data</code>创建标定数据模型 CalibDataID</p>
+</li>
+<li><p>使用<code>set_calib_cam_param</code>设置相机参数</p>
+</li>
+<li><p>使用<code>set_calib_data_calib_object</code>设置标定板</p>
+</li>
+<li><p>设置标定板数据的路径，读取采集的标定板图像</p>
+</li>
+<li><p>使用<code>find_calib_object</code>、<code>get_calib_data_observ_contours</code>算子提取标定板图像的角点中心、轮廓信息，将其存储在 CalibDataID 中</p>
+</li>
+<li><p>使用<code>calibrate_cameras</code>算子对相机进行标定，计算相机的内外参数</p>
+</li>
+<li><p>使用<code>get_calib_data</code>获取参数，通过<code>write_cam_par</code>将参数保存到文件</p>
+</li>
+<li><p>利用获取的参数进行图像校正、测量等</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://hbroad.github.io">MQRoad</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://hbroad.github.io/halcon_mv/">https://hbroad.github.io/halcon_mv/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://hbroad.github.io" target="_blank">南阳向北</a>！</span></div></div><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/Halcon/"><span class="tags-punctuation"> <svg class="icon iconfont icon-biaoqian" title="Halcon" aria-hidden="true"><use xlink:href="#icon-biaoqian1"></use></svg></span>Halcon<span class="tagsPageCount">2</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png" data-sites="wechat,weibo,qq,facebook,twitter"></div><link rel="stylesheet" href="https://npm.elemecdn.com/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://npm.elemecdn.com/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/halcon_learning/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Halcon从入门到入土</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/halcon_learning/" title="Halcon从入门到入土"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-13</div><div class="title">Halcon从入门到入土</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a></div><div class="comment-tips" id="comment-tips"><span>你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div><div class="comment-barrage"></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="author-info-top"> <div class="card-info-avatar"><a class="avatar-img" href="/about"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/04/17/YGpk958xbD3jyol.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></a><div class="author-status-box"><div class="author-status"><g-emoji class="g-emoji" alias="writing_hand" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/270d.png">✍️</g-emoji><span>on Studying</span></div></div></div></div><div class="author-info__sayhi" id="author-info__sayhi"></div><h1 class="author-info__name">MQRoad</h1><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">即将踏入社会成为打工人，在此记录过去、现在和未来！</div></div><div class="banner-button-group"><a class="banner-button" onclick="pjax.loadUrl(&quot;/about/&quot;)"><span class="banner-button-text">了解更多</span><i class="fas fa-circle-right"></i></a></div><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/hbroad" target="_blank" title="Github"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-gitHub"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=1746469211@qq.com" target="_blank" title="Email"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-youxiang"></use></svg></a><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/188520608" target="_blank" title="BiliBili"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-bilibili"></use></svg></a><a class="social-icon faa-parent animated-hover" href="tencent://Message/?Uin=1746469211&amp;amp;websiteName=local.edu.com:8888=&amp;amp;Menu=yes" target="_blank" title="QQ"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-QQ1"></use></svg></a></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://img02.anzhiy.cn/adminuploads/1/2022/09/11/631ddb7c9b250.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://s2.loli.net/2022/08/23/LaJqogHM3WOiAD6.jpg) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ROI%E8%8E%B7%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">ROI获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E7%9A%84%E5%8F%98%E6%8D%A2%E4%B8%8E%E6%A0%A1%E6%AD%A3"><span class="toc-number">2.</span> <span class="toc-text">图像的变换与校正</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E5%8F%98%E6%8D%A2%E7%90%86%E8%AE%BA"><span class="toc-number">2.1.</span> <span class="toc-text">几何变换理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B8%E4%BC%BC%E5%8F%98%E6%8D%A2"><span class="toc-number">2.1.1.</span> <span class="toc-text">相似变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2"><span class="toc-number">2.1.2.</span> <span class="toc-text">仿射变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2"><span class="toc-number">2.1.3.</span> <span class="toc-text">投影变换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Halcon-%E7%AE%97%E5%AD%90"><span class="toc-number">2.2.</span> <span class="toc-text">Halcon 算子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E7%A7%BB%E7%AE%97%E5%AD%90"><span class="toc-number">2.2.1.</span> <span class="toc-text">平移算子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E7%AE%97%E5%AD%90"><span class="toc-number">2.2.2.</span> <span class="toc-text">旋转算子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%E7%AE%97%E5%AD%90"><span class="toc-number">2.2.3.</span> <span class="toc-text">缩放算子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2-1"><span class="toc-number">2.2.4.</span> <span class="toc-text">仿射变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%95%E5%BD%B1%E5%8F%98%E6%8D%A2-1"><span class="toc-number">2.2.5.</span> <span class="toc-text">投影变换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA"><span class="toc-number">3.</span> <span class="toc-text">图像增强</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E8%BF%90%E7%AE%97"><span class="toc-number">3.1.</span> <span class="toc-text">点运算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA%E7%AE%97%E5%AD%90"><span class="toc-number">3.2.</span> <span class="toc-text">图像增强算子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%8F%96%E5%8F%8D"><span class="toc-number">3.2.1.</span> <span class="toc-text">图像取反</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E5%9B%BE%E5%83%8F%E5%AF%B9%E6%AF%94%E5%BA%A6"><span class="toc-number">3.2.2.</span> <span class="toc-text">增加图像对比度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%E5%9B%BE%E5%83%8F%E7%81%B0%E5%BA%A6"><span class="toc-number">3.2.3.</span> <span class="toc-text">缩放图像灰度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E4%BF%AE%E6%AD%A3"><span class="toc-number">3.2.4.</span> <span class="toc-text">直方图修正</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%B9%B3%E6%BB%91%E7%AE%97%E5%AD%90"><span class="toc-number">3.3.</span> <span class="toc-text">图像平滑算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%91%E5%9F%9F%E5%A4%84%E7%90%86"><span class="toc-number">3.4.</span> <span class="toc-text">频域处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%80%81%E6%BB%A4%E6%B3%A2%E5%A2%9E%E5%BC%BA"><span class="toc-number">3.5.</span> <span class="toc-text">同态滤波增强</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2"><span class="toc-number">4.</span> <span class="toc-text">图像分割</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%88%E5%80%BC%E5%88%86%E5%89%B2"><span class="toc-number">4.1.</span> <span class="toc-text">阈值分割</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E6%9C%BA%E6%A0%87%E5%AE%9A%E2%80%94%E2%80%94Halcon"><span class="toc-number">4.2.</span> <span class="toc-text">相机标定——Halcon</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86"><span class="toc-number">4.2.1.</span> <span class="toc-text">标定原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%87%E5%AE%9A%E6%B5%81%E7%A8%8B"><span class="toc-number">4.2.2.</span> <span class="toc-text">标定流程</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/halcon_mv/" title="机器视觉—Halcon"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器视觉—Halcon"/></a><div class="content"><a class="title" href="/halcon_mv/" title="机器视觉—Halcon">机器视觉—Halcon</a><time datetime="2023-05-15T13:03:05.000Z" title="发表于 2023-05-15 21:03:05">2023-05-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/halcon_learning/" title="Halcon从入门到入土"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/05/13/Di9p5SVFybnfNol.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Halcon从入门到入土"/></a><div class="content"><a class="title" href="/halcon_learning/" title="Halcon从入门到入土">Halcon从入门到入土</a><time datetime="2023-05-13T12:42:38.000Z" title="发表于 2023-05-13 20:42:38">2023-05-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/chatgptlike/" title="ChatGPT 类产品"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/04/28/kopIxRQtBaFM1Oe.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ChatGPT 类产品"/></a><div class="content"><a class="title" href="/chatgptlike/" title="ChatGPT 类产品">ChatGPT 类产品</a><time datetime="2023-04-28T01:53:21.000Z" title="发表于 2023-04-28 09:53:21">2023-04-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/Python_start2end/" title="Python 从入门到放弃"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/04/28/X9hLcsObyviEjfw.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python 从入门到放弃"/></a><div class="content"><a class="title" href="/Python_start2end/" title="Python 从入门到放弃">Python 从入门到放弃</a><time datetime="2023-04-19T13:07:56.000Z" title="发表于 2023-04-19 21:07:56">2023-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/hec_opencv/" title="机器人手眼标定（OpenCV)"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/04/17/61JeqyzFC5fY9io.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器人手眼标定（OpenCV)"/></a><div class="content"><a class="title" href="/hec_opencv/" title="机器人手眼标定（OpenCV)">机器人手眼标定（OpenCV)</a><time datetime="2023-04-17T09:12:29.000Z" title="发表于 2023-04-17 17:12:29">2023-04-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 MQRoad</div><div id="workboard"><div id="runtimeTextTip"></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2023/04/17/YGpk958xbD3jyol.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="fa-fw fas fa-archive faa-tada"></i><span> 全部</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="fa-fw fas fa-shapes faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="fa-fw fas fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/link/"><span> 友链</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><span> AI资讯</span></a></div><div class="menus_item"><a class="site-page faa-parent animated-hover" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child" style="left:-79px;"><li><a class="site-page child faa-parent animated-hover" href="/about/"><svg class="icon faa-tada" aria-hidden="true"><use xlink:href="#icon-zhifeiji"></use></svg><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="fa-fw fas fas fa-lightbulb faa-tada"></i><span> 发个说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/timeline/"><i class="fa-fw fa-fw fas fa-shoe-prints faa-tada faa-tada"></i><span> 建站小记</span></a></li></ul></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><a id="switch_commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><svg class="icon" aria-hidden="true"><use href="#icon-danmu"></use></svg></a><button id="center-console" type="button" title="中控台"><i class="fas fa-fish-fins"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="console"><div class="close-btn" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"><i class="fas fa-circle-xmark"></i></div><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://s2.loli.net/2022/08/02/NU5AfdCaoirtyK1.jpg" target="_blank"><img class="post-qr-code-img" alt="wechat" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s2.loli.net/2022/08/02/NU5AfdCaoirtyK1.jpg"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="https://img01.anzhiy.cn/useruploads/0/2023/04/06/642ec98c8227c.png" target="_blank"><img class="post-qr-code-img" alt="alipay" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img01.anzhiy.cn/useruploads/0/2023/04/06/642ec98c8227c.png"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments" onclick="anzhiyu.hideConsole()"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> <span>最新评论</span></span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags" onclick="anzhiyu.hideConsole()"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/C/" style="font-size: 1.35em; color: rgb(47, 158, 126)">C++<sup>3</sup></a><a href="/tags/Commemorate/" style="font-size: 1.15em; color: rgb(168, 72, 175)">Commemorate<sup>1</sup></a><a href="/tags/Coppeliasim-Vrep/" style="font-size: 1.15em; color: rgb(158, 177, 105)">Coppeliasim/Vrep<sup>1</sup></a><a href="/tags/DIP/" style="font-size: 1.15em; color: rgb(50, 86, 159)">DIP<sup>1</sup></a><a href="/tags/HEC/" style="font-size: 1.15em; color: rgb(179, 165, 137)">HEC<sup>1</sup></a><a href="/tags/Halcon/" style="font-size: 1.25em; color: rgb(83, 2, 82)">Halcon<sup>2</sup></a><a href="/tags/Hexo/" style="font-size: 1.15em; color: rgb(187, 38, 151)">Hexo<sup>1</sup></a><a href="/tags/Interview/" style="font-size: 1.45em; color: rgb(95, 19, 110)">Interview<sup>8</sup></a><a href="/tags/Leetcode/" style="font-size: 1.35em; color: rgb(181, 121, 158)">Leetcode<sup>3</sup></a><a href="/tags/PCL/" style="font-size: 1.15em; color: rgb(140, 92, 135)">PCL<sup>1</sup></a><a href="/tags/Point-Cloud/" style="font-size: 1.15em; color: rgb(4, 167, 195)">Point Cloud<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.15em; color: rgb(102, 188, 118)">Python<sup>1</sup></a><a href="/tags/Simulation/" style="font-size: 1.15em; color: rgb(124, 176, 140)">Simulation<sup>1</sup></a><a href="/tags/UR5/" style="font-size: 1.25em; color: rgb(84, 121, 183)">UR5<sup>2</sup></a><a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" style="font-size: 1.15em; color: rgb(192, 2, 164)">人工智能<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.15em; color: rgb(72, 164, 162)">数据结构<sup>1</sup></a><a href="/tags/%E6%AF%95%E8%AE%BE/" style="font-size: 1.25em; color: rgb(102, 75, 180)">毕设<sup>2</sup></a><a href="/tags/%E7%82%B9%E4%BA%91/" style="font-size: 1.15em; color: rgb(99, 83, 36)">点云<sup>1</sup></a><a href="/tags/%E8%B5%84%E8%AE%AF/" style="font-size: 1.15em; color: rgb(86, 195, 34)">资讯<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history" onclick="anzhiyu.hideConsole()"><div class="item-headline"><i class="fas fa-archive"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">三月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/09/"><span class="card-archive-list-date">九月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/08/"><span class="card-archive-list-date">八月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">5</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/07/"><span class="card-archive-list-date">七月 2022</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">4</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/05/"><span class="card-archive-list-date">五月 2020</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" onclick="rm.switchDarkMode()" title="显示模式切换" href="javascript:void(0);"><i class="fas fa-moon" style="font-size: 1rem;"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="fas fa-arrows-alt-h"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="fa-solid fa-message"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="fas fa-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="fa-solid fa-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="fa-solid fa-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="fa-solid fa-arrow-rotate-right"></i></div><div class="rightMenu-item" id="menu-top"><i class="fa-solid fa-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="fas fa-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="fas fa-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="fas fa-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="fas fa-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="fas fa-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="fas fa-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="fas fa-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="fas fa-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="fa-solid fa-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="fa-solid fa-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="fa-solid fa-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="fas fa-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="fas fa-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="fas fa-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="fas fa-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="fas fa-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="fas fa-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="fas fa-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="fas fa-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="fa-solid fa-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="fa-solid fa-moon"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="fas fa-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script><div><script src="https://npm.elemecdn.com/jquery@latest/dist/jquery.min.js"></script><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.0.8/source/js/utils.js"></script><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.0.8/source/js/main.js"></script><script src="https://npm.elemecdn.com/hexo-theme-anzhiyu@1.0.8/source/js/tw_cn.js"></script><script src="https://npm.elemecdn.com/@fancyapps/ui@4.0.31/dist/fancybox.umd.js"></script><script src="https://npm.elemecdn.com/instant.page@5.1.1/instantpage.js" type="module"></script><script src="https://npm.elemecdn.com/vanilla-lazyload@17.3.1/dist/lazyload.iife.min.js"></script><script src="https://npm.elemecdn.com/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  console.log(1)
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2020 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    //- `
+        
+    //-    █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+    //-   ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+    //-   ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+    //-   ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+    //-   ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+    //-   ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+    //-     `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#3b70fc",
+      "",
+      "color:#3b70fc",
+      "color:#3b70fc",
+      "",
+      "color:#3b70fc",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 MQRoad 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("04/01/2020 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    let currentTimeHtml = "";
+    if (hnum < 18 && hnum >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='fas fa-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      img.src = "";
+      img.title = "";
+      img.alt = "";
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='fas fa-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.0
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://npm.elemecdn.com/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>(()=>{
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://mqroad.zeabur.app',
+      region: '',
+      onCommentLoaded: function () {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://mqroad.zeabur.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(function (res) {
+      countELement.innerText = res[0].count
+    }).catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  const runFn = () => {
+    init()
+    
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') {
+      setTimeout(runFn,0)
+      return
+    } 
+    getScript('https://npm.elemecdn.com/twikoo@1.6.11/dist/twikoo.all.min.js').then(runFn)
+  }
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = () => {
+      loadTwikoo()
+    }
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://mqroad.zeabur.app',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.innerHTML= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://npm.elemecdn.com/twikoo@1.6.11/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick}</span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/bubble/bubble.js"></script><script>var visitorMail = "visitor@anzhiy.cn";</script><script data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/catalog-bar/catalog-bar.js"></script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/categoryBar/categoryBar.js"></script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script async="async">// 初始化函数
+let rm = {};
+
+//禁止图片拖拽
+let imgElements = document.getElementsByTagName("img");
+for (let i = 0; i < imgElements.length; i++) {
+  imgElements[i].addEventListener("dragstart", function (event) {
+    event.preventDefault();
+  });
+}
+
+// 显示菜单
+rm.showRightMenu = function (isTrue, x = 0, y = 0) {
+  let rightMenu = document.getElementById("rightMenu");
+  rightMenu.style.top = x + "px";
+  rightMenu.style.left = y + "px";
+  if (isTrue) {
+    rightMenu.style.display = "block";
+    stopMaskScroll();
+  } else {
+    rightMenu.style.display = "none";
+  }
+};
+
+// 隐藏菜单
+rm.hideRightMenu = function () {
+  rm.showRightMenu(false);
+  let rightMenuMask = document.querySelector("#rightmenu-mask");
+  rightMenuMask.style.display = "none";
+};
+
+// 尺寸
+let rmWidth = $("#rightMenu").width();
+let rmHeight = $("#rightMenu").height();
+
+// 重新定义尺寸
+rm.reloadrmSize = function () {
+  rmWidth = $("#rightMenu").width();
+  rmHeight = $("#rightMenu").height();
+};
+
+// 获取点击的href
+let domhref = "";
+let domImgSrc = "";
+let globalEvent = null;
+
+// 监听右键初始化
+window.oncontextmenu = function (event) {
+  if (document.body.clientWidth > 768) {
+    let pageX = event.clientX + 10; //加10是为了防止显示时鼠标遮在菜单上
+    let pageY = event.clientY;
+
+    //其他额外菜单
+    let $rightMenuOther = $(".rightMenuOther");
+    let $rightMenuPlugin = $(".rightMenuPlugin");
+    let $rightMenuCopyText = $("#menu-copytext");
+    let $rightMenuPasteText = $("#menu-pastetext");
+    let $rightMenuCommentText = $("#menu-commenttext");
+    let $rightMenuNewWindow = $("#menu-newwindow");
+    let $rightMenuNewWindowImg = $("#menu-newwindowimg");
+    let $rightMenuCopyLink = $("#menu-copylink");
+    let $rightMenuCopyImg = $("#menu-copyimg");
+    let $rightMenuDownloadImg = $("#menu-downloadimg");
+    let $rightMenuSearch = $("#menu-search");
+    let $rightMenuSearchBaidu = $("#menu-searchBaidu");
+    let $rightMenuMusicToggle = $("#menu-music-toggle");
+    let $rightMenuMusicBack = $("#menu-music-back");
+    let $rightMenuMusicForward = $("#menu-music-forward");
+    let $rightMenuMusicPlaylist = $("#menu-music-playlist");
+    let $rightMenuMusicCopyMusicName = $("#menu-music-copyMusicName");
+    let href = event.target.href;
+    let imgsrc = event.target.currentSrc;
+
+    // 判断模式 扩展模式为有事件
+    let pluginMode = false;
+    $rightMenuOther.show();
+    globalEvent = event;
+
+    // 检查是否需要复制 是否有选中文本
+    if (selectTextNow && window.getSelection()) {
+      pluginMode = true;
+      $rightMenuCopyText.show();
+      $rightMenuCommentText.show();
+      $rightMenuSearch.show();
+      $rightMenuSearchBaidu.show();
+    } else {
+      $rightMenuCopyText.hide();
+      $rightMenuCommentText.hide();
+      $rightMenuSearchBaidu.hide();
+      $rightMenuSearch.hide();
+    }
+
+    //检查是否右键点击了链接a标签
+    if (href) {
+      pluginMode = true;
+      $rightMenuNewWindow.show();
+      $rightMenuCopyLink.show();
+      domhref = href;
+    } else {
+      $rightMenuNewWindow.hide();
+      $rightMenuCopyLink.hide();
+    }
+
+    //检查是否需要复制图片
+    if (imgsrc) {
+      pluginMode = true;
+      $rightMenuCopyImg.show();
+      $rightMenuDownloadImg.show();
+      $rightMenuNewWindowImg.show();
+      domImgSrc = imgsrc;
+    } else {
+      $rightMenuCopyImg.hide();
+      $rightMenuDownloadImg.hide();
+      $rightMenuNewWindowImg.hide();
+    }
+
+    // 判断是否为输入框
+    if (event.target.tagName.toLowerCase() === "input" || event.target.tagName.toLowerCase() === "textarea") {
+      console.log("这是一个输入框");
+      pluginMode = true;
+      $rightMenuPasteText.show();
+    } else {
+      $rightMenuPasteText.hide();
+    }
+    const navMusicEl = document.querySelector("#nav-music");
+    //判断是否是音乐
+    if (navMusicEl && navMusicEl.contains(event.target)) {
+      pluginMode = true;
+      $rightMenuMusicToggle.show();
+      $rightMenuMusicBack.show();
+      $rightMenuMusicForward.show();
+      $rightMenuMusicPlaylist.show();
+      $rightMenuMusicCopyMusicName.show();
+    } else {
+      $rightMenuMusicToggle.hide();
+      $rightMenuMusicBack.hide();
+      $rightMenuMusicForward.hide();
+      $rightMenuMusicPlaylist.hide();
+      $rightMenuMusicCopyMusicName.hide();
+    }
+
+    // 如果不是扩展模式则隐藏扩展模块
+    if (pluginMode) {
+      $rightMenuOther.hide();
+      $rightMenuPlugin.show();
+    } else {
+      $rightMenuPlugin.hide();
+    }
+
+    rm.reloadrmSize();
+
+    // 鼠标默认显示在鼠标右下方，当鼠标靠右或考下时，将菜单显示在鼠标左方\上方
+    if (pageX + rmWidth > window.innerWidth) {
+      pageX -= rmWidth + 10;
+    }
+    if (pageY + rmHeight > window.innerHeight) {
+      pageY -= pageY + rmHeight - window.innerHeight;
+    }
+
+    rm.showRightMenu(true, pageY, pageX);
+    $("#rightmenu-mask").attr("style", "display: flex");
+    return false;
+  }
+};
+
+// 下载图片状态
+rm.downloadimging = false;
+
+// 复制图片到剪贴板
+rm.writeClipImg = function (imgsrc) {
+  console.log("按下复制");
+  rm.hideRightMenu();
+  anzhiyu.snackbarShow("正在下载中，请稍后", false, 10000);
+  if (rm.downloadimging == false) {
+    rm.downloadimging = true;
+    setTimeout(function () {
+      copyImage(imgsrc);
+      anzhiyu.snackbarShow("复制成功！图片已添加盲水印，请遵守版权协议");
+      rm.downloadimging = false;
+    }, "10000");
+  }
+};
+
+function imageToBlob(imageURL) {
+  const img = new Image();
+  const c = document.createElement("canvas");
+  const ctx = c.getContext("2d");
+  img.crossOrigin = "";
+  img.src = imageURL;
+  return new Promise(resolve => {
+    img.onload = function () {
+      c.width = this.naturalWidth;
+      c.height = this.naturalHeight;
+      ctx.drawImage(this, 0, 0);
+      c.toBlob(
+        blob => {
+          // here the image is a blob
+          resolve(blob);
+        },
+        "image/png",
+        0.75
+      );
+    };
+  });
+}
+
+async function copyImage(imageURL) {
+  const blob = await imageToBlob(imageURL);
+  const item = new ClipboardItem({ "image/png": blob });
+  navigator.clipboard.write([item]);
+}
+
+rm.switchDarkMode = function () {
+  // Switch Between Light And Dark Mode
+  const nowMode = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  if (nowMode === "light") {
+    activateDarkMode();
+    saveToLocal.set("theme", "dark", 2);
+    GLOBAL_CONFIG.Snackbar !== undefined && anzhiyu.snackbarShow(GLOBAL_CONFIG.Snackbar.day_to_night);
+  } else {
+    activateLightMode();
+    saveToLocal.set("theme", "light", 2);
+    GLOBAL_CONFIG.Snackbar !== undefined && anzhiyu.snackbarShow(GLOBAL_CONFIG.Snackbar.night_to_day);
+  }
+  // handle some cases
+  typeof runMermaid === "function" && window.runMermaid();
+  rm.hideRightMenu();
+  anzhiyu.darkModeStatus();
+};
+
+rm.copyUrl = function (id) {
+  $("body").after("<input id='copyVal'></input>");
+  var text = id;
+  var input = document.getElementById("copyVal");
+  input.value = text;
+  input.select();
+  input.setSelectionRange(0, input.value.length);
+  document.execCommand("copy");
+  $("#copyVal").remove();
+};
+
+function stopMaskScroll() {
+  if (document.getElementById("rightmenu-mask")) {
+    let xscroll = document.getElementById("rightmenu-mask");
+    xscroll.addEventListener(
+      "mousewheel",
+      function (e) {
+        //阻止浏览器默认方法
+        rm.hideRightMenu();
+        // e.preventDefault();
+      },
+      false
+    );
+  }
+  if (document.getElementById("rightMenu")) {
+    let xscroll = document.getElementById("rightMenu");
+    xscroll.addEventListener(
+      "mousewheel",
+      function (e) {
+        //阻止浏览器默认方法
+        rm.hideRightMenu();
+        // e.preventDefault();
+      },
+      false
+    );
+  }
+}
+
+rm.rightmenuCopyText = function (txt) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt);
+  }
+  rm.hideRightMenu();
+};
+
+rm.copyPageUrl = function () {
+  var url = window.location.href;
+  rm.copyUrl(url);
+  anzhiyu.snackbarShow("复制本页链接地址成功", false, 2000);
+  rm.hideRightMenu();
+};
+
+rm.sharePage = function () {
+  var content = window.location.href;
+  rm.copyUrl(url);
+  anzhiyu.snackbarShow("复制本页链接地址成功", false, 2000);
+  rm.hideRightMenu();
+};
+
+// 复制当前选中文本
+var selectTextNow = "";
+document.onmouseup = document.ondblclick = selceText;
+
+function selceText() {
+  var txt;
+  if (document.selection) {
+    txt = document.selection.createRange().text;
+  } else {
+    txt = window.getSelection().toString();
+  }
+  selectTextNow = txt !== "" ? txt : "";
+}
+
+// 读取剪切板
+rm.readClipboard = function () {
+  if (navigator.clipboard) {
+    navigator.clipboard.readText().then(clipText => rm.insertAtCaret(globalEvent.target, clipText));
+  }
+};
+
+// 粘贴文本到焦点
+rm.insertAtCaret = function (elemt, value) {
+  const startPos = elemt.selectionStart,
+    endPos = elemt.selectionEnd;
+  if (document.selection) {
+    elemt.focus();
+    var sel = document.selection.createRange();
+    sel.text = value;
+    elemt.focus();
+  } else {
+    if (startPos || startPos == "0") {
+      var scrollTop = elemt.scrollTop;
+      elemt.value = elemt.value.substring(0, startPos) + value + elemt.value.substring(endPos, elemt.value.length);
+      elemt.focus();
+      elemt.selectionStart = startPos + value.length;
+      elemt.selectionEnd = startPos + value.length;
+      elemt.scrollTop = scrollTop;
+    } else {
+      elemt.value += value;
+      elemt.focus();
+    }
+  }
+};
+
+//粘贴文本
+rm.pasteText = function () {
+  const result = rm.readClipboard() || "";
+  rm.hideRightMenu();
+};
+
+//引用到评论
+rm.rightMenuCommentText = function (txt) {
+  rm.hideRightMenu();
+  const postCommentDom = document.querySelector("#post-comment");
+  var domTop = postCommentDom.offsetTop;
+  window.scrollTo(0, domTop - 80);
+  if (txt == "undefined" || txt == "null") txt = "好棒！";
+  function setText() {
+    setTimeout(() => {
+      var input = document.getElementsByClassName("el-textarea__inner")[0];
+      if (!input) setText();
+      let evt = document.createEvent("HTMLEvents");
+      evt.initEvent("input", true, true);
+      let inputValue = replaceAll(txt, "\n", "\n> ");
+      input.value = "> " + inputValue + "\n\n";
+      input.dispatchEvent(evt);
+      input.focus();
+      input.setSelectionRange(-1, -1);
+      if (document.getElementById("comment-tips")) {
+        document.getElementById("comment-tips").classList.add("show");
+      }
+    }, 100);
+  }
+  setText();
+};
+
+//替换所有内容
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+// 百度搜索
+rm.searchBaidu = function () {
+  anzhiyu.snackbarShow("即将跳转到百度搜索", false, 2000);
+  setTimeout(function () {
+    window.open("https://www.baidu.com/s?wd=" + selectTextNow);
+  }, "2000");
+  rm.hideRightMenu();
+};
+
+//分享链接
+rm.copyLink = function () {
+  rm.rightmenuCopyText(domhref);
+  anzhiyu.snackbarShow("已复制链接地址");
+};
+
+function addRightMenuClickEvent() {
+  // 添加点击事件
+  $("#menu-backward").on("click", function () {
+    window.history.back();
+    rm.hideRightMenu();
+  });
+  $("#menu-forward").on("click", function () {
+    window.history.forward();
+    rm.hideRightMenu();
+  });
+  $("#menu-refresh").on("click", function () {
+    window.location.reload();
+  });
+  $("#menu-top").on("click", function () {
+    anzhiyu.scrollToDest(0, 500);
+    rm.hideRightMenu();
+  });
+  $(".menu-link").on("click", rm.hideRightMenu);
+  $("#menu-darkmode").on("click", rm.switchDarkMode);
+  $("#menu-home").on("click", function () {
+    window.location.href = window.location.origin;
+  });
+  $("#menu-randomPost").on("click", function () {
+    toRandomPost();
+  });
+  $("#menu-commentBarrage").on("click", anzhiyu.switchCommentBarrage);
+  $("#rightmenu-mask").on("click", rm.hideRightMenu);
+  $("#rightmenu-mask").contextmenu(function () {
+    rm.hideRightMenu();
+    return false;
+  });
+  $("#menu-copy").on("click", rm.copyPageUrl);
+  $("#menu-pastetext").on("click", rm.pasteText);
+  $("#menu-copytext").on("click", function () {
+    rm.rightmenuCopyText(selectTextNow);
+    anzhiyu.snackbarShow("复制成功，复制和转载请标注本文地址");
+  });
+  $("#menu-commenttext").on("click", function () {
+    rm.rightMenuCommentText(selectTextNow);
+  });
+  $("#menu-newwindow").on("click", function () {
+    window.open(domhref);
+    rm.hideRightMenu();
+  });
+  $("#menu-copylink").on("click", rm.copyLink);
+  $("#menu-downloadimg").on("click", function () {
+    anzhiyu.downloadImage(domImgSrc, "anzhiyu");
+  });
+  $("#menu-newwindowimg").on("click", function () {
+    window.open(domImgSrc);
+    rm.hideRightMenu();
+  });
+  $("#menu-copyimg").on("click", function () {
+    rm.writeClipImg(domImgSrc);
+  });
+  $("#menu-searchBaidu").on("click", rm.searchBaidu);
+  //音乐
+  $("#menu-music-toggle").on("click", anzhiyu.musicToggle);
+  $("#menu-music-back").on("click", anzhiyu.musicSkipBack);
+  $("#menu-music-forward").on("click", anzhiyu.musicSkipForward);
+  $("#menu-music-copyMusicName").on("click", function () {
+    rm.rightmenuCopyText(anzhiyu.musicGetName());
+    anzhiyu.snackbarShow("复制歌曲名称成功", false, 3000);
+  });
+}
+
+addRightMenuClickEvent();</script><script data-pjax>var themeColorMeta = document.querySelector('meta[name="theme-color"]');
+var pageHeaderEl = document.getElementById("page-header");
+var navMusicEl = document.getElementById("nav-music");
+var consoleEl = document.getElementById("console");
+// 已随机的歌曲
+var selectRandomSong = [];
+// 音乐默认声音大小
+var musicVolume = 0.8;
+// 是否切换了周杰伦音乐列表
+var changeMusicListFlag = false;
+// 当前默认播放列表
+var defaultPlayMusicList = [];
+
+document.getElementById("page-name").innerText = document.title.split(" | 安知鱼")[0];
+anzhiyu.initIndexEssay();
+anzhiyu.changeTimeInEssay();
+anzhiyu.removeBodyPaceClass();
+anzhiyu.changeTimeInAlbumDetail();
+anzhiyu.reflashEssayWaterFall();
+anzhiyu.sayhi();
+anzhiyu.stopImgRightDrag();
+anzhiyu.addNavBackgroundInit();
+anzhiyu.setValueToBodyType();
+
+anzhiyu.getCustomPlayList();
+anzhiyu.addEventListenerConsoleMusicList(false);</script><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/ali_font.js"></script><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://npm.elemecdn.com/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://npm.elemecdn.com/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+  window.anzhiyuScrollFnToDo && window.removeEventListener('scroll', anzhiyuScrollFnToDo)
+
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script></div></body></html>
